@@ -1,6 +1,6 @@
 'use client';
 import React, { useContext, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import FilterByName from '../_components/filterByName/page';
 import { UserContext } from '@/context/useContext';
@@ -23,7 +23,9 @@ export default function Category() {
   //get all id to add to wishlist
   const [fullIdToWishlist, setFullIdToWishlist] = useState([]);
   // get search param
-  const { type } = useParams();
+  const searchParam = useSearchParams();
+  // get type from search param
+  const type = searchParam.get('type');
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
   // get all id

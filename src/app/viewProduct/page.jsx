@@ -1,7 +1,7 @@
 'use client';
 import useRequest from '@/hooks/useRequest';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import StarRating from '../_components/starRating/page';
 import LoadingAnimation from '../_components/LoadingAnimation/page';
@@ -10,8 +10,10 @@ import toast from 'react-hot-toast';
 import SwitchSliderSwiper from '../_components/SwitchSliderSwiper/page';
 import useWishlist from '@/hooks/(wishList)/useWishlist';
 export default function viewProduct() {
+  // get search param
+  const searchParam = useSearchParams();
   // get type
-  const { type } = useParams();
+  const type = searchParam.get('type');
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
   // get all id
