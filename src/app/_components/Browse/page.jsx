@@ -9,14 +9,14 @@ export default function Browse() {
       title: 'Mens',
       image: '/mens-fashion.png',
       fullWidth: false,
-      href: { pathname: '/Category', query: { type: `Men's` } },
+      href: { pathname: `/Category/Men's` },
     },
     {
       id: 2,
       title: 'Women',
       image: '/women-fashion.png',
       fullWidth: false,
-      href: { pathname: '/Category', query: { type: `Women's` } },
+      href: { pathname: `/Category/Women's` },
     },
   ]);
   return (

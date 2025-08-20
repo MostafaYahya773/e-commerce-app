@@ -157,10 +157,7 @@ export default function HomeSections({
         } w-full flex justify-center items-center `}
       >
         <Link
-          href={{
-            pathname: '/viewProduct',
-            query: { type: `${type}` },
-          }}
+          href={`/viewProduct/${type}`}
           className=" w-fit px-45 py-5 border-opacity-20 border border-black rounded-full  font-roboto font-medium text-18"
         >
           View All

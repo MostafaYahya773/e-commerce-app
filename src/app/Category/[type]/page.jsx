@@ -1,12 +1,12 @@
 'use client';
 import React, { useContext, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import FilterByName from '../_components/filterByName/page';
+import FilterByName from '../../_components/filterByName/page';
 import { UserContext } from '@/context/useContext';
 import Image from 'next/image';
-import StarRating from '../_components/starRating/page';
-import LoadingAnimation from '../_components/LoadingAnimation/page';
+import StarRating from '../../_components/starRating/page';
+import LoadingAnimation from '../../_components/LoadingAnimation/page';
 import useCart from '@/hooks/(cart)/useCart';
 import toast from 'react-hot-toast';
 import useWishlist from '@/hooks/(wishList)/useWishlist';
@@ -23,9 +23,7 @@ export default function Category() {
   //get all id to add to wishlist
   const [fullIdToWishlist, setFullIdToWishlist] = useState([]);
   // get search param
-  const searchParam = useSearchParams();
-  // get type from search param
-  const type = searchParam.get('type');
+  const { type } = useParams();
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
   // get all id

@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import useWishlistData from '@/hooks/(wishList)/useWishlistData';
 import Image from 'next/image';
 import NavList from '../NavList/page';
-import useCart from '@/hooks/(cart)/useCart';
 import useRequest from '@/hooks/useRequest';
 
 export default function Navbar() {
@@ -41,7 +40,7 @@ export default function Navbar() {
     {
       name: 'New Arrivals',
       id: 4,
-      path: { pathname: '/viewProduct', query: { type: `Men's` } },
+      path: { pathname: `/viewProduct/Men's}` },
     },
     {
       name: 'Brands',

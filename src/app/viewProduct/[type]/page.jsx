@@ -1,24 +1,22 @@
 'use client';
 import useRequest from '@/hooks/useRequest';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
-import StarRating from '../_components/starRating/page';
-import LoadingAnimation from '../_components/LoadingAnimation/page';
+import StarRating from '../../_components/starRating/page';
+import LoadingAnimation from '../../_components/LoadingAnimation/page';
 import useCart from '@/hooks/(cart)/useCart';
 import toast from 'react-hot-toast';
-import SwitchSliderSwiper from '../_components/SwitchSliderSwiper/page';
+import SwitchSliderSwiper from '../../_components/SwitchSliderSwiper/page';
 import useWishlist from '@/hooks/(wishList)/useWishlist';
+import { useParams } from 'next/navigation';
+
 export default function viewProduct() {
-  // get search param
-  const searchParam = useSearchParams();
-  // get type
-  const type = searchParam.get('type');
+  const { type } = useParams();
+
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
   // get all id
   const [fullId, setFullId] = useState([]);
-  // check if data is loading
   //check if cart is add or not to wishlist
   const [isAddToWishlist, setIsAddToWishlist] = useState(null);
   //get all id to add to wishlist
@@ -31,9 +29,10 @@ export default function viewProduct() {
   const { mutate: addToCart } = useCart();
   // filter data
   let newArriesval = data?.data.filter((item) =>
-    item?.category.name.includes(type)
+    item?.category.name.includes(type.slice(0, 5))
   );
-  let [x, setX] = useState([]);
+  // check if data is loading
+
   if (isLoading) return <LoadingAnimation />;
   const handleAddToCart = (id) => {
     setIsAdd(id);
