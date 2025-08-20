@@ -23,9 +23,7 @@ export default function Category() {
   //get all id to add to wishlist
   const [fullIdToWishlist, setFullIdToWishlist] = useState([]);
   // get search param
-  const searchParam = useParams();
-  // get type from search param
-  const type = searchParam.get('type');
+  const { type } = useParams();
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
   // get all id
