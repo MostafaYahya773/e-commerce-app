@@ -8,7 +8,6 @@ import StarRating from '../_components/starRating/page';
 import Link from 'next/link';
 import useCart from '@/hooks/(cart)/useCart';
 import LoadingAnimation from '../_components/LoadingAnimation/page';
-import LoadingFetch from '../_components/LoadingFetch/page';
 import EmptyProducts from '../_components/EmptyProducts/page';
 
 export default function WishList() {
