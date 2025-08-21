@@ -8,7 +8,7 @@ import LoadingAnimation from '../LoadingAnimation/page';
 export default function ProductDetailsHero({ product }) {
   return (
     <div className=" grid grid-cols-1 md:grid-cols-[auto_1fr] gap-15 lg:gap-20  ">
-      <div className="img max-w-[380px] md:max-w-[400px] lg:w-[450px] ">
+      <div className="img w-full md:w-300 ">
         <SwitchSliderSwiper
           path="/productDetails"
           images={product?.images}

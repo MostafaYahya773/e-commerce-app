@@ -1,7 +1,7 @@
 'use client';
 import useRequest from '@/hooks/useRequest';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import StarRating from '../../_components/starRating/page';
 import LoadingAnimation from '../../_components/LoadingAnimation/page';
 import useCart from '@/hooks/(cart)/useCart';
@@ -12,6 +12,7 @@ import { useParams } from 'next/navigation';
 
 export default function viewProduct() {
   const { type } = useParams();
+  console.log(type);
 
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
@@ -27,10 +28,19 @@ export default function viewProduct() {
   const { mutate: addToWishlist } = useWishlist();
   //add products to cart
   const { mutate: addToCart } = useCart();
-  // filter data
-  let newArriesval = data?.data.filter((item) =>
-    item?.category.name.includes(type.slice(0, 5))
+  // filter data top selling
+  const topSellingData = useMemo(
+    () => data?.data?.slice(0, 33).filter((item) => item?.ratingsAverage >= 4),
+    [data]
   );
+  // filter data new arrivals
+  const newArrivalsData = useMemo(() => {
+    if (!data?.data) return [];
+    return [...data.data]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 33);
+  }, [data]);
+
   // check if data is loading
 
   if (isLoading) return <LoadingAnimation />;
@@ -70,96 +80,338 @@ export default function viewProduct() {
   };
 
   return (
-    <div className="flex flex-col gap-y-10 md:mt-80 mt-50">
-      <div className="title px-15">
-        <h1 className="font-archivo text-20 md:text-32 lg:text-48 text-start">
-          {type === 'Men' ? 'New Arrivals' : 'Top Selling'}
+    <div className="flex flex-col gap-y-10 md:mt-80 mt-50 px-10 font-roboto">
+      <div className="title border-b border-opacity-20 border-black pb-10">
+        <h1 className="font-bold text-16 md:text-24 text-start">
+          {decodeURIComponent(type) === 'top selling'
+            ? 'Top Selling'
+            : 'New Arrivals'}
         </h1>
-        <p className="opacity-50 font-roboto text-14 md:text-20 lg:text-25">
-          {type === 'Men'
-            ? 'Fresh styles just landed  check them out!'
-            : 'Most Wanted by Our Customers , Dont Miss Out'}
+        <p className="opacity-60 text-14 md:text-16">
+          {decodeURIComponent(type) === 'top selling'
+            ? 'Most Wanted by Our Customers , Dont Miss Out'
+            : 'Fresh styles just landed  check them out!'}
         </p>
       </div>
-      <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-20 px-20">
-        {newArriesval?.map((item, index) => (
-          <div
-            key={index}
-            className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
-          >
-            <Link
-              aria-label="product details"
-              href={`/productDetails/${item?._id}`}
-            >
-              <div className="img ">
-                <SwitchSliderSwiper
-                  path="/viewProduct"
-                  images={item?.images}
-                  spaceBetween={20}
-                  arrows={false}
-                  dots={true}
-                />
-              </div>
-              <div className="name text-16 md:text-20 font-bold   mb-10">
-                {item?.title.split(' ').slice(0, 3).join(' ')}
-              </div>
-              <div className="rate flex items-center gap-1  mb-10">
-                <StarRating rate={item?.ratingsAverage} />
-              </div>
-              <div className="price flex justify-between items-center">
-                <div className="priceDetails font-bold  flex gap-10">
-                  {item?.priceAfterDiscount ? (
-                    <span>{`$${item.priceAfterDiscount}`}</span>
-                  ) : (
-                    ''
-                  )}
-                  {item?.priceAfterDiscount ? (
-                    <del className="opacity-40">{`$${item?.price}`}</del>
-                  ) : (
-                    <span>{`$${item?.price}`}</span>
-                  )}
+      <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-10">
+        {decodeURIComponent(type) === 'top selling'
+          ? (topSellingData || []).map((item, index) => (
+              <div
+                key={index}
+                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
+              >
+                <Link
+                  aria-label="product details"
+                  href={`/productDetails/${item?._id}`}
+                >
+                  <div className="img">
+                    <SwitchSliderSwiper
+                      path="/viewProduct"
+                      images={item?.images}
+                      spaceBetween={20}
+                      arrows={false}
+                      dots={true}
+                    />
+                  </div>
+                  <div className="name text-16 md:text-20 font-bold mb-10">
+                    {item?.title.split(' ').slice(0, 3).join(' ')}
+                  </div>
+                  <div className="rate flex items-center gap-1 mb-10">
+                    <StarRating rate={item?.ratingsAverage} />
+                  </div>
+                  <div className="price flex justify-between items-center">
+                    <div className="priceDetails font-bold flex gap-10">
+                      {item?.priceAfterDiscount ? (
+                        <span>{`$${item.priceAfterDiscount}`}</span>
+                      ) : (
+                        ''
+                      )}
+                      {item?.priceAfterDiscount ? (
+                        <del className="opacity-40">{`$${item?.price}`}</del>
+                      ) : (
+                        <span>{`$${item?.price}`}</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
+                  <button
+                    onClick={() => {
+                      handleAddToWishlist(item?._id);
+                      handleFullIdToWishlist(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAddToWishlist === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullIdToWishlist.includes(item?._id)
+                            ? 'text-descount-color'
+                            : ''
+                        } fa-solid fa-heart`}
+                      ></i>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleAddToCart(item?._id);
+                      handleFullId(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAdd === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                        } fa-solid fa-cart-shopping`}
+                      ></i>
+                    )}
+                  </button>
                 </div>
               </div>
-            </Link>
-            <div className=" flex gap-5 absolute right-5 bottom-5 opacity-40">
-              <button
-                onClick={() => {
-                  handleAddToWishlist(item?._id),
-                    handleFullIdToWishlist(item?._id);
-                }}
-                className="text-18 md:text:20 px-2"
+            ))
+          : (newArrivalsData || []).map((item, index) => (
+              <div
+                key={index}
+                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
               >
-                {isAddToWishlist === item?._id ? (
-                  <span className="loaderCount"></span>
-                ) : (
-                  <i
-                    className={` ${
-                      fullIdToWishlist.includes(item?._id)
-                        ? 'text-descount-color'
-                        : ''
-                    } fa-solid fa-heart`}
-                  ></i>
-                )}
-              </button>
-              <button
-                onClick={() => {
-                  handleAddToCart(item?._id), handleFullId(item?._id);
-                }}
-                className="text-18 md:text:20 px-2"
+                <Link
+                  aria-label="product details"
+                  href={`/productDetails/${item?._id}`}
+                >
+                  <div className="img">
+                    <SwitchSliderSwiper
+                      path="/viewProduct"
+                      images={item?.images}
+                      spaceBetween={20}
+                      arrows={false}
+                      dots={true}
+                    />
+                  </div>
+                  <div className="name text-16 md:text-20 font-bold mb-10">
+                    {item?.title.split(' ').slice(0, 3).join(' ')}
+                  </div>
+                  <div className="rate flex items-center gap-1 mb-10">
+                    <StarRating rate={item?.ratingsAverage} />
+                  </div>
+                  <div className="price flex justify-between items-center">
+                    <div className="priceDetails font-bold flex gap-10">
+                      {item?.priceAfterDiscount ? (
+                        <span>{`$${item.priceAfterDiscount}`}</span>
+                      ) : (
+                        ''
+                      )}
+                      {item?.priceAfterDiscount ? (
+                        <del className="opacity-40">{`$${item?.price}`}</del>
+                      ) : (
+                        <span>{`$${item?.price}`}</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
+                  <button
+                    onClick={() => {
+                      handleAddToWishlist(item?._id);
+                      handleFullIdToWishlist(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAddToWishlist === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullIdToWishlist.includes(item?._id)
+                            ? 'text-descount-color'
+                            : ''
+                        } fa-solid fa-heart`}
+                      ></i>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleAddToCart(item?._id);
+                      handleFullId(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAdd === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                        } fa-solid fa-cart-shopping`}
+                      ></i>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
+        {decodeURIComponent(type) === 'top selling'
+          ? (topSellingData || []).map((item, index) => (
+              <div
+                key={index}
+                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
               >
-                {isAdd === item?._id ? (
-                  <span className="loaderCount"></span>
-                ) : (
-                  <i
-                    className={` ${
-                      fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                    } fa-solid fa-cart-shopping`}
-                  ></i>
-                )}
-              </button>
-            </div>
-          </div>
-        ))}
+                <Link
+                  aria-label="product details"
+                  href={`/productDetails/${item?._id}`}
+                >
+                  <div className="img">
+                    <SwitchSliderSwiper
+                      path="/viewProduct"
+                      images={item?.images}
+                      spaceBetween={20}
+                      arrows={false}
+                      dots={true}
+                    />
+                  </div>
+                  <div className="name text-16 md:text-20 font-bold mb-10">
+                    {item?.title.split(' ').slice(0, 3).join(' ')}
+                  </div>
+                  <div className="rate flex items-center gap-1 mb-10">
+                    <StarRating rate={item?.ratingsAverage} />
+                  </div>
+                  <div className="price flex justify-between items-center">
+                    <div className="priceDetails font-bold flex gap-10">
+                      {item?.priceAfterDiscount ? (
+                        <span>{`$${item.priceAfterDiscount}`}</span>
+                      ) : (
+                        ''
+                      )}
+                      {item?.priceAfterDiscount ? (
+                        <del className="opacity-40">{`$${item?.price}`}</del>
+                      ) : (
+                        <span>{`$${item?.price}`}</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
+                  <button
+                    onClick={() => {
+                      handleAddToWishlist(item?._id);
+                      handleFullIdToWishlist(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAddToWishlist === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullIdToWishlist.includes(item?._id)
+                            ? 'text-descount-color'
+                            : ''
+                        } fa-solid fa-heart`}
+                      ></i>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleAddToCart(item?._id);
+                      handleFullId(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAdd === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                        } fa-solid fa-cart-shopping`}
+                      ></i>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))
+          : (newArrivalsData || []).map((item, index) => (
+              <div
+                key={index}
+                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
+              >
+                <Link
+                  aria-label="product details"
+                  href={`/productDetails/${item?._id}`}
+                >
+                  <div className="img">
+                    <SwitchSliderSwiper
+                      path="/viewProduct"
+                      images={item?.images}
+                      spaceBetween={20}
+                      arrows={false}
+                      dots={true}
+                    />
+                  </div>
+                  <div className="name text-16 md:text-20 font-bold mb-10">
+                    {item?.title.split(' ').slice(0, 3).join(' ')}
+                  </div>
+                  <div className="rate flex items-center gap-1 mb-10">
+                    <StarRating rate={item?.ratingsAverage} />
+                  </div>
+                  <div className="price flex justify-between items-center">
+                    <div className="priceDetails font-bold flex gap-10">
+                      {item?.priceAfterDiscount ? (
+                        <span>{`$${item.priceAfterDiscount}`}</span>
+                      ) : (
+                        ''
+                      )}
+                      {item?.priceAfterDiscount ? (
+                        <del className="opacity-40">{`$${item?.price}`}</del>
+                      ) : (
+                        <span>{`$${item?.price}`}</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
+                  <button
+                    onClick={() => {
+                      handleAddToWishlist(item?._id);
+                      handleFullIdToWishlist(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAddToWishlist === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullIdToWishlist.includes(item?._id)
+                            ? 'text-descount-color'
+                            : ''
+                        } fa-solid fa-heart`}
+                      ></i>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleAddToCart(item?._id);
+                      handleFullId(item?._id);
+                    }}
+                    className="text-18 md:text:20 px-2"
+                  >
+                    {isAdd === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                        } fa-solid fa-cart-shopping`}
+                      ></i>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
       </div>
     </div>
   );

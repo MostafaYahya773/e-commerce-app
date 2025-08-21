@@ -49,9 +49,9 @@ export default function Hero() {
       <div className="grid grid-rows-2 md:grid-rows-none md:grid-cols-2 gap-x-20 px-5  ">
         <div className="text flex flex-col gap-y-35 justify-center py-40">
           <div className="title flex flex-col gap-y-20">
-            <h1 className="text-36 md:text-48  xl:text-64 font-archivo leading-[1.1] ">
+            <h2 className="text-36 md:text-48  xl:text-64 font-archivo leading-[1.1] ">
               FIND CLOTHES THAT MATCHES YOUR STYLE
-            </h1>
+            </h2>
             <p className="opacity-60 md:text-16 text-14">
               Browse through our diverse range of meticulously crafted garments,
               designed to bring out your individuality and cater to your sense
@@ -73,7 +73,7 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        <div className="img mx-auto relative w-full h-auto  bg-[url('/heroImg.png')] bg-[top_center] bg-cover bg-no-repeat">
+        <div className="img mx-auto relative w-full h-auto bg-[url('/heroImg.png')] bg-[top_center] bg-cover bg-no-repeat">
           <Image
             src={'/heroStar.png'}
             alt="stars"

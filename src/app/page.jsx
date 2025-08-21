@@ -16,9 +16,19 @@ export default function Home() {
   const { mutate: addToCart } = useCart();
   //add to wishlist
   const { mutate: addToWishlist } = useWishlist();
-  // filter data
-  const newArrivalsData = useMemo(() => data?.data.slice(18, 22), [data]);
-  const topSellingData = useMemo(() => data?.data.slice(4, 8), [data]);
+  // filter new arrivals
+  const newArrivalsData = useMemo(() => {
+    if (!data?.data) return [];
+    return [...data.data]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 33);
+  }, [data]);
+  // filter top sellning
+  const topSellingData = useMemo(
+    () => data?.data?.slice(0, 33).filter((item) => item?.ratingsAverage >= 4),
+    [data]
+  );
+
   // check if data is loading
   if (isLoading) return <LoadingAnimation />;
 
@@ -32,7 +42,7 @@ export default function Home() {
           <HomeSections
             title="New Arrivals"
             data={newArrivalsData}
-            type={"Men's"}
+            type={'new arrivals'}
             loading={isLoading}
             addToCart={addToCart}
             addToWishlist={addToWishlist}
@@ -42,7 +52,7 @@ export default function Home() {
           <HomeSections
             title="Top Selling"
             data={topSellingData}
-            type={"Women's"}
+            type={'top selling'}
             loading={isLoading}
             addToCart={addToCart}
             addToWishlist={addToWishlist}

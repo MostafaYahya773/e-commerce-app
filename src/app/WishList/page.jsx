@@ -9,6 +9,7 @@ import Link from 'next/link';
 import useCart from '@/hooks/(cart)/useCart';
 import LoadingAnimation from '../_components/LoadingAnimation/page';
 import EmptyProducts from '../_components/EmptyProducts/page';
+import LoadingFetch from '../_components/LoadingFetch/page';
 
 export default function WishList() {
   // use it to get id to select animation
@@ -25,7 +26,8 @@ export default function WishList() {
   const { mutate: deleteWishlist } = useDeleteWishlist();
   // first reload
   if (isLoading) return <LoadingAnimation />;
-  // if (isFetching) return <LoadingFetch />;
+  if (isFetching) return <LoadingFetch />;
+
   // check if product exist
   if (WishListProducts.count === 0)
     return (

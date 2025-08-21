@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import StarRating from '../starRating/page';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import SwitchSliderSwiper from '../SwitchSliderSwiper/page';
 
-export default function HomeSections({
+export default memo(function HomeSections({
   title,
   data,
   loading,
@@ -22,7 +22,8 @@ export default function HomeSections({
   const [isAddToWishlist, setIsAddToWishlist] = useState(null);
   //get all id to add to wishlist
   const [fullIdToWishlist, setFullIdToWishlist] = useState([]);
-
+  // select data to show in home page
+  const dataToShow = useMemo(() => data?.slice(16, 20), [data]);
   // handle add to cart
   const handleAddToCart = (id) => {
     setIsAdd(id);
@@ -72,13 +73,13 @@ export default function HomeSections({
             <span className="loader"></span>
           </div>
         ) : (
-          data?.map((item, index) => (
+          dataToShow?.map((item, index) => (
             <div
               key={index}
               className="relative info flex p-10 product-shadow rounded-md flex-col gap-y-5 w-[250px] flex-shrink-0 grow shadow-lg"
             >
               <Link href={`/productDetails/${item?._id}`}>
-                <div className="img ">
+                <div className="img">
                   <SwitchSliderSwiper
                     path="/home"
                     images={item?.images}
@@ -165,4 +166,4 @@ export default function HomeSections({
       </div>
     </div>
   );
-}
+});

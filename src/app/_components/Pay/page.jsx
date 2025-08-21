@@ -1,5 +1,6 @@
 import { UserContext } from '@/context/useContext';
 import useCashOrder from '@/hooks/(Order)/useCashOrder';
+import useOnlineOrder from '@/hooks/(Order)/useOnlineOrder';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useContext, useState } from 'react';
@@ -11,8 +12,11 @@ export default function Pay({ Total }) {
   const path = usePathname();
   // Use context
   const { currentValue, currentAddress } = useContext(UserContext);
-  //send data to api
+  //send data to api cash state
   const { mutate: cashPayment } = useCashOrder(CardId);
+  //send data to api online state
+
+  const { mutate: onlinePayment } = useOnlineOrder(CardId);
   // set data to send it to api
   const data = {
     details: currentAddress?.details,
@@ -22,26 +26,38 @@ export default function Pay({ Total }) {
 
   const handlePayment = (e) => {
     e.preventDefault();
-    if (
-      path === '/Payment' &&
-      currentValue === 'cash' &&
-      currentAddress != null
-    ) {
-      cashPayment(
-        { data },
-        {
-          onSuccess: () => {
-            toast.success('Order Placed Successfully');
+    if (path === '/Payment' && currentAddress != null) {
+      if (currentValue === 'cash') {
+        cashPayment(
+          { data },
+          {
+            onSuccess: () => {
+              toast.success('Order Placed Successfully');
+            },
           },
-        },
-        {
-          onerror: () => {
-            toast.error('Something went wrong');
+          {
+            onerror: () => {
+              toast.error('Something went wrong');
+            },
+          }
+        );
+      } else if (currentValue === 'card') {
+        onlinePayment(
+          { data },
+          {
+            onSuccess: (e) => {
+              window.location.href = e.data?.session?.url;
+            },
           },
-        }
-      );
-    } else {
-      toast.error('Please Select Payment Method');
+          {
+            onerror: () => {
+              toast.error('Something went wrong');
+            },
+          }
+        );
+      } else {
+        toast.error('Please select a payment method');
+      }
     }
   };
 
