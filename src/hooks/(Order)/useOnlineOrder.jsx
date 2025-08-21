@@ -13,7 +13,7 @@ export default function useOnlineOrder(CardId) {
     };
     return axios
       .post(
-        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=http://https://e-commerce-app-pi-seven.vercel.app/`,
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=http://e-commerce-app-pi-seven.vercel.app/`,
         {
           shippingAddress: data?.data,
         },
