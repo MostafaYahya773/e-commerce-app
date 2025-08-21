@@ -39,7 +39,7 @@ export default function NavList() {
       className: 'flex gap-x-2 items-center relative py-5',
     },
     {
-      href: '/Orders',
+      href: '/allOrders',
       icon: 'fa-money-check',
       label: 'All orders',
       className: 'flex gap-x-2 items-center relative py-5',
