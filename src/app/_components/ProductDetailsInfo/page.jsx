@@ -16,7 +16,7 @@ export default function ProductDetailsInfo({ product }) {
         setIsClicked(false);
       },
       onError: (e) => {
-        console.log(e.response.data.message);
+        toast.error(e.response.data.message);
       },
     });
   };
@@ -32,35 +32,35 @@ export default function ProductDetailsInfo({ product }) {
         <StarRating rate={product?.ratingsAverage} />
       </div>
       <div className="price flex items-center gap-20 font-bold text-24 lg:text-32">
-        <h1 className={`${product?.priceAfterDiscount ? 'block' : 'hidden'}`}>
+        <h2 className={`${product?.priceAfterDiscount ? 'block' : 'hidden'}`}>
           ${product?.priceAfterDiscount}
-        </h1>
-        <h1 className="opacity-30">
+        </h2>
+        <h2 className="opacity-30">
           <del>${product?.price}</del>
-        </h1>
+        </h2>
       </div>
       <div className="description">
         <p className="text-14 md:text-16  opacity-60">{product?.description}</p>
       </div>
       <div className="moreInfo flex gap-20 flex-wrap *:flex *:flex-col *:gap-5 *:items-center">
         <div className="brand">
-          <h1 className="font-bold text-18 md:text-20 lg:text-24">Brand</h1>
+          <h2 className="font-bold text-18 md:text-20 lg:text-24">Brand</h2>
           <p className="text-14 md:text-16 opacity-60">
             {product?.brand?.name}
           </p>
         </div>
         <div className="sold">
-          <h1 className="font-bold text-18 md:text-20 lg:text-24">Sold </h1>
+          <h2 className="font-bold text-18 md:text-20 lg:text-24">Sold </h2>
           <p className="text-14 md:text-16 opacity-60">{product?.sold}</p>
         </div>
         <div className="category">
-          <h1 className="font-bold text-18 md:text-20 lg:text-24">Category</h1>
+          <h2 className="font-bold text-18 md:text-20 lg:text-24">Category</h2>
           <p className="text-14 md:text-16 opacity-60">
             {product?.category?.name}
           </p>
         </div>
         <div className="quintiy">
-          <h1 className="font-bold text-18 md:text-20 lg:text-24">Quantity</h1>
+          <h2 className="font-bold text-18 md:text-20 lg:text-24">Quantity</h2>
           <p className="text-14 md:text-16 opacity-60">{product?.quantity}</p>
         </div>
       </div>

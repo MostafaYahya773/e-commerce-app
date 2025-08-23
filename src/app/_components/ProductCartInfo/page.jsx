@@ -5,6 +5,7 @@ import useDeleteProduct from '@/hooks/(cart)/useDeleteProduct';
 import toast from 'react-hot-toast';
 import useUpdateCount from '@/hooks/(cart)/useUpdateCount';
 import { usePathname } from 'next/navigation';
+import LoadingAnimation from '../LoadingAnimation/page';
 
 export default function ProductCartInfo({ data }) {
   const path = usePathname();
@@ -48,7 +49,6 @@ export default function ProductCartInfo({ data }) {
       }
     );
   };
-
   return (
     <div className={'font-roboto gap-20 md:gap-10 '}>
       <div className="AllProducts flex flex-col gap-y-10 border px-10 border-opacity-20 rounded-xl border-black">
@@ -121,9 +121,9 @@ export default function ProductCartInfo({ data }) {
               </div>
               <div className="Productprice flex justify-between items-start md:items-center">
                 <div className="price">
-                  <h1 className="font-bold text-16 md:text-20">
+                  <h2 className="font-bold text-16 md:text-20">
                     ${product?.price}
-                  </h1>
+                  </h2>
                 </div>
                 <div
                   className={`${

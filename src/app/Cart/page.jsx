@@ -15,7 +15,7 @@ export default function Cart() {
   //get data of cart
   const { data, isLoading } = useRequest('cart');
   // delete all data from cart
-  const { mutate: clearDataFromCart, isFetching } = useDeleteCart();
+  const { mutate: clearDataFromCart } = useDeleteCart();
   if (isLoading) return <LoadingAnimation />;
   // check if product exist
   if (data?.data?.products?.length === 0)
@@ -23,7 +23,7 @@ export default function Cart() {
       <EmptyProducts src={'/cartEmpty.png'} message={'Your cart is empty'} />
     );
 
-  if (isFetching) return <LoadingFetch />;
+  // if (isFetching) return <LoadingFetch />;
 
   const handleClearData = () => {
     clearDataFromCart();
@@ -67,7 +67,7 @@ export default function Cart() {
         } grid gap-20 relative`}
       >
         <div className="mb-5">
-          <ProductCartInfo data={data} isFetching={isFetching} />
+          <ProductCartInfo data={data} />
         </div>
         <div className={`${path === '/Cart' ? 'block' : 'hidden'} pay`}>
           <Pay Total={data} />

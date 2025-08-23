@@ -6,16 +6,12 @@ import HomeSections from './_components/homeSections/page';
 import Browse from './_components/Browse/page';
 import Comments from './_components/comments/page';
 import LoadingAnimation from './_components/LoadingAnimation/page';
-import useCart from '@/hooks/(cart)/useCart';
-import useWishlist from '@/hooks/(wishList)/useWishlist';
+// import useCart from '@/hooks/(cart)/useCart';
+// import useWishlist from '@/hooks/(wishList)/useWishlist';
 
 export default function Home() {
   // get all products
   const { data, isLoading } = useRequest('products');
-  // add to cart
-  const { mutate: addToCart } = useCart();
-  //add to wishlist
-  const { mutate: addToWishlist } = useWishlist();
   // filter new arrivals
   const newArrivalsData = useMemo(() => {
     if (!data?.data) return [];
@@ -44,8 +40,6 @@ export default function Home() {
             data={newArrivalsData}
             type={'new arrivals'}
             loading={isLoading}
-            addToCart={addToCart}
-            addToWishlist={addToWishlist}
           />
         </div>
         <div className="top-selling-section mt-50 pt-20">
@@ -54,8 +48,6 @@ export default function Home() {
             data={topSellingData}
             type={'top selling'}
             loading={isLoading}
-            addToCart={addToCart}
-            addToWishlist={addToWishlist}
           />
         </div>
         <div className="mt-50 pt-20 ">

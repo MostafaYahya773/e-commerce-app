@@ -5,15 +5,13 @@ import StarRating from '../starRating/page';
 import toast from 'react-hot-toast';
 import { memo, useMemo, useState } from 'react';
 import SwitchSliderSwiper from '../SwitchSliderSwiper/page';
-
-export default memo(function HomeSections({
-  title,
-  data,
-  loading,
-  type,
-  addToCart,
-  addToWishlist,
-}) {
+import useCart from '@/hooks/(cart)/useCart';
+import useWishlist from '@/hooks/(wishList)/useWishlist';
+export default memo(function HomeSections({ title, data, loading, type }) {
+  // add to cart
+  const { mutate: addToCart } = useCart();
+  //add to wishlist
+  const { mutate: addToWishlist } = useWishlist();
   // chick if cart is add or not to cart
   const [isAdd, setIsAdd] = useState(null);
   // get all id to add to cart

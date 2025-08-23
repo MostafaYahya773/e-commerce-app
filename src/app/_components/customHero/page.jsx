@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 
 const CustomHero = memo(({ img, title }) => {
   const path = usePathname();
-  console.log(path);
 
   return (
     <div className="bg-bg-secondry relative rounded-lg font-roboto">
@@ -13,13 +12,13 @@ const CustomHero = memo(({ img, title }) => {
             path.includes('viewProduct')
               ? 'text-20 md:text-25 lg:text-48'
               : 'text-32'
-          } font-archivo  text-center`}
+          } font-archivo text-center`}
         >
           {title}
         </h1>
       </div>
       <div
-        className="img object-cover bg-cover bg-no-repeat bg-[center_43%] h-200 md:h-300"
+        className="img object-cover bg-cover bg-no-repeat bg-[center_45%] h-200 md:h-300 "
         style={{ backgroundImage: `url(${img})` }}
       ></div>
     </div>

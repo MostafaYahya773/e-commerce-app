@@ -20,7 +20,7 @@ export default function ProductDetailsHero({ product }) {
           }}
         />
       </div>
-      <div className="details">
+      <div className="details ">
         <ProductDetailsInfo product={product} />
       </div>
     </div>
