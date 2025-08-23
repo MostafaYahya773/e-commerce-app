@@ -3,7 +3,7 @@ import React from 'react';
 export default function LoadingAnimation() {
   return (
     <div>
-      <div className="flex justify-center items-center w-full h-full">
+      <div className="flex justify-center items-center mb-100 w-full h-screen">
         <Image
           src={'/animation.svg'}
           width={300}

@@ -8,6 +8,7 @@ import useWishlist from '@/hooks/(wishList)/useWishlist';
 import StarRating from '../_components/starRating/page';
 import LoadingAnimation from '../_components/LoadingAnimation/page';
 import SwitchSliderSwiper from '../_components/SwitchSliderSwiper/page';
+import CustomHero from '../_components/customHero/page';
 
 export default function viewProduct() {
   // chick if cart is add or not
@@ -67,13 +68,12 @@ export default function viewProduct() {
   };
 
   return (
-    <div className="flex flex-col gap-y-10 md:mt-80 mt-50 px-10">
-      <div className="title border-b border-opacity-20 border-black pb-10">
-        <h2 className="font-bold text-16 md:text-24">On Sale</h2>
-        <p className="opacity-60 text-14 md:text-16">
-          Discover unbeatable discounts on our top products in the On Sale
-          section , shop now and enjoy exclusive offers before they run out!
-        </p>
+    <div className="flex flex-col gap-y-10 md:mt-80 mt-50 mb-150 lg:mb-80 px-10">
+      <div>
+        <CustomHero
+          img="/sale.png"
+          title="Stay stylish with up to 50% off Shop the latest trends today!"
+        />
       </div>
       <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-15 ">
         {dataOffer?.map((item, index) => (

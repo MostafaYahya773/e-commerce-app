@@ -22,7 +22,7 @@ export default function ProductDetails() {
   if (!product) return <LoadingAnimation />;
 
   return (
-    <div className="px-10 mt-50 md:mt-80 flex flex-col gap-y-40">
+    <div className="px-10 mt-50 md:mt-80 mb-10  0 lg:mb-80 flex flex-col gap-y-40">
       <div>
         <ProductDetailsHero product={product.data} />
       </div>

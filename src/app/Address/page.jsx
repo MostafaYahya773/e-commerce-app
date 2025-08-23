@@ -42,7 +42,7 @@ export default function Address() {
   if (isFetching) return <LoadingFetch />;
 
   return (
-    <div className="flex flex-col gap-y-10 mt-50 md:mt-80 px-10 font-roboto">
+    <div className="flex flex-col gap-y-10 mt-50 md:mt-80 mb-150 lg:mb-80 px-10 font-roboto">
       <div className="title border-b pb-10 border-opacity-20 border-black">
         <h1 className="font-bold text-18 md:text-20">Your Address</h1>
         <p className="text-14 md:text-16 opacity-60">

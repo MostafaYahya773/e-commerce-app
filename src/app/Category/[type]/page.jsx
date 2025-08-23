@@ -64,7 +64,7 @@ export default function Category() {
     setFullId((prev) => [...prev, id]);
   };
   return (
-    <div className="flex flex-col gap-y-40 px-10">
+    <div className="flex flex-col mb-150 lg:mb-80 gap-y-40 px-10">
       <div className="info grid grid-cols-1 lg:grid-cols-[20%_80%] gap-x-15">
         <div className="filter p-20 border border-opacity-10 flex flex-col gap-y-22 border-black rounded-[20px]">
           <div className="title  flex font-roboto text-18 justify-between items-center pb-20 border-b border-opacity-10 border-black">

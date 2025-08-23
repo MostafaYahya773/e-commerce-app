@@ -1,10 +1,10 @@
 import { Archivo_Black, Roboto } from 'next/font/google';
 import './globals.css';
 import Nav from './_components/nav/page';
-import Alert from './_components/alert/page';
 import ReactQueryProvider from './_components/reactQueryProvider/page';
 import { UserProvider } from '@/context/useContext';
 import { Toaster } from 'react-hot-toast';
+import Footer from './_components/footer/page';
 
 export const metadata = {
   title: 'Create Next App',
@@ -33,10 +33,12 @@ export default function RootLayout({ children }) {
           <UserProvider>
             <Toaster />
             <header>
-              {/* <Alert /> */}
               <Nav />
             </header>
-            <main>{children}</main>
+            <main className="min-h-screen">{children}</main>
+            <footer>
+              <Footer />
+            </footer>
           </UserProvider>
         </ReactQueryProvider>
       </body>

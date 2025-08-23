@@ -14,7 +14,7 @@ export default function Payment() {
   // console.log();
   if (CartDetails?.numOfCartItems === 0) {
     return (
-      <div className="w-full  h-screen font-roboto flex flex-col gap-20 justify-center items-center px-10 text-center">
+      <div className="w-full mb-150 lg:mb-80 h-screen font-roboto flex flex-col gap-20 justify-center items-center px-10 text-center">
         <div className="relative w-200 h-200 md:w-300 md:h-300">
           <Image
             src="/noPayment.png"

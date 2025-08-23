@@ -32,7 +32,7 @@ export default function Cart() {
     <div
       className={`${
         path === '/Cart' ? 'mt-50 md:mt-80' : ''
-      } flex flex-col gap-y-10 px-10 `}
+      } flex flex-col gap-y-10 px-10 mb-150 lg:mb-80 `}
     >
       <div className="title flex justify-between items-center">
         <h1 className=" font-bold  text-16 md:text-20">

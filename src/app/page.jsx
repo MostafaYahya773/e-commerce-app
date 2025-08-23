@@ -58,13 +58,12 @@ export default function Home() {
             addToWishlist={addToWishlist}
           />
         </div>
-        <div className="mt-50 pt-20">
+        <div className="mt-50 pt-20 ">
           <Browse />
         </div>
-        <div className="mt-50 pt-20">
+        <div className="mt-50 mb-150 lg:mb-80 pt-20">
           <Comments />
         </div>
-        <div className="mt-50 pt-20"></div>
       </div>
     </div>
   );

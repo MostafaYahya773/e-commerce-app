@@ -9,11 +9,10 @@ import toast from 'react-hot-toast';
 import SwitchSliderSwiper from '../../_components/SwitchSliderSwiper/page';
 import useWishlist from '@/hooks/(wishList)/useWishlist';
 import { useParams } from 'next/navigation';
+import CustomHero from '@/app/_components/customHero/page';
 
 export default function viewProduct() {
   const { type } = useParams();
-  console.log(type);
-
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
   // get all id
@@ -80,18 +79,20 @@ export default function viewProduct() {
   };
 
   return (
-    <div className="flex flex-col gap-y-10 md:mt-80 mt-50 px-10 font-roboto">
-      <div className="title border-b border-opacity-20 border-black pb-10">
-        <h1 className="font-bold text-16 md:text-24 text-start">
-          {decodeURIComponent(type) === 'top selling'
-            ? 'Top Selling'
-            : 'New Arrivals'}
-        </h1>
-        <p className="opacity-60 text-14 md:text-16">
-          {decodeURIComponent(type) === 'top selling'
-            ? 'Most Wanted by Our Customers , Dont Miss Out'
-            : 'Fresh styles just landed  check them out!'}
-        </p>
+    <div className="flex flex-col gap-y-10 md:mt-80 mt-50 mb-150 lg:mb-80 px-10 font-roboto">
+      <div>
+        <CustomHero
+          img={`${
+            decodeURIComponent(type) === 'top selling'
+              ? `/topselling.png`
+              : '/arrives.png'
+          }`}
+          title={`${
+            decodeURIComponent(type) === 'top selling'
+              ? 'Top Selling Products'
+              : 'New Arrivals Products'
+          }`}
+        />
       </div>
       <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-10">
         {decodeURIComponent(type) === 'top selling'

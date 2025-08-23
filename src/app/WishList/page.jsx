@@ -71,7 +71,7 @@ export default function WishList() {
   };
 
   return (
-    <div className="relative flex flex-col gap-y-10 font-roboto gap-20 md:gap-10 px-10 mt-50 md:mt-80">
+    <div className="relative flex flex-col gap-y-10 font-roboto gap-20 md:gap-10 px-10 mt-50 md:mt-80 mb-150 lg:mb-80">
       <div className="header font-roboto flex justify-between items-center border-b border-black border-opacity-10 pb-5">
         <h1 className="font-bold text-16 md:text-20">WishList</h1>
         <p className="opacity-60 text-14 md:text-16">

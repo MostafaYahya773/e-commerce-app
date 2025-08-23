@@ -63,7 +63,7 @@ export default function allorders() {
   if (isLoading) return <LoadingAnimation />;
 
   return (
-    <div className="flex flex-col gap-y-10 md:gap-y-30 px-20 md:px-10 mt-50 md:mt-80">
+    <div className="flex flex-col gap-y-10 md:gap-y-30 px-20 md:px-10 mt-50  mb-150 lg:mb-80 md:mt-80">
       <div className="titles flex justify-between items-center pb-10 border-b border-opacity-20 border-black">
         <h1 className="font-bold text-16 md:text-20">Orders</h1>
         <span className="text-12 md:text-16 opacity-70 font-semibold mt-4">
