@@ -42,11 +42,6 @@ export default function Navbar() {
       id: 4,
       path: '/viewProduct/newArrivals',
     },
-    {
-      name: 'Brands',
-      id: 5,
-      path: '/Brands',
-    },
   ]);
   //cart count
   const [CountOfCart, setCountOfCart] = useState(0);

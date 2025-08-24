@@ -1,6 +1,6 @@
 'use client';
 import React, { useContext, useState } from 'react';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import FilterByName from '../../_components/filterByName/page';
 import { UserContext } from '@/context/useContext';

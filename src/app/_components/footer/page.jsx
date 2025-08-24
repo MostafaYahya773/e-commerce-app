@@ -125,7 +125,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="footer bg-bg-secondry w-screen h-fit py-40 relative left-1/2  -translate-x-1/2 px-10">
+    <div className="footer bg-bg-secondry w-screen h-fit py-40 relative left-1/2 -translate-x-1/2 px-10">
       <div className="max-w-[1300px] relative  mx-auto flex flex-col gap-y-10 font-roboto ">
         <div className="contact grid grid-cols-[auto]  md:grid-cols-2 gap-10 w-full h-fit bg-black absolute p-30 -top-1/4 md:-top-1/4 lg:-top-1/3 rounded-xl ">
           <h2 className="text-white font-bold text-18 md:text-32 leading-tight font-archivo  w-full">

@@ -69,6 +69,8 @@ module.exports = {
       150: '9.375rem', // 150px
       200: '12.50rem', //200px
       300: '18.75rem', // 300px
+      400: '25rem', // 400px
+      500: '31.25rem', // 500px
     },
     screens: {
       xs: '22.6rem', // 375px

@@ -68,11 +68,12 @@ export default function viewProduct() {
   };
 
   return (
-    <div className="flex flex-col gap-y-10 md:mt-80 mt-50 mb-150 lg:mb-80 px-10">
+    <div className="flex flex-col gap-y-10  mb-150 lg:mb-80 px-10">
       <div>
         <CustomHero
           img="/sale.png"
-          title="Stay stylish with up to 50% off Shop the latest trends today!"
+          title="OnSale"
+          subtitle="Discover unbeatable deals with our exclusive On Sale collection, where top-quality products meet exceptional discounts"
         />
       </div>
       <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-15 ">

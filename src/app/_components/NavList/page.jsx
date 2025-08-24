@@ -14,7 +14,7 @@ export default function NavList() {
       className: 'md:hidden flex gap-x-2 items-center relative py-5',
     },
     {
-      href: '/OnSale',
+      href: '/onSale',
       icon: 'fa-tag',
       label: 'OnSale',
       className: 'md:hidden flex gap-x-2 items-center relative py-5',
@@ -26,12 +26,7 @@ export default function NavList() {
       label: 'New Arrivals',
       className: 'md:hidden flex gap-x-2 items-center relative py-5',
     },
-    {
-      href: '/Brands',
-      icon: 'fa-solid fa-copyright',
-      label: 'Brands',
-      className: 'md:hidden flex gap-x-2 items-center relative py-5',
-    },
+
     {
       href: '/Address',
       icon: 'fa-solid fa-house',
@@ -39,19 +34,14 @@ export default function NavList() {
       className: 'flex gap-x-2 items-center relative py-5',
     },
     {
-      href: '/allOrders',
+      href: '/allorders',
       icon: 'fa-money-check',
       label: 'All orders',
       className: 'flex gap-x-2 items-center relative py-5',
     },
+
     {
-      href: '/',
-      icon: 'fa-user-large',
-      label: 'My account',
-      className: 'flex gap-x-2 items-center relative py-5',
-    },
-    {
-      href: '/logout',
+      href: '/login',
       icon: 'fa-right-from-bracket',
       label: 'Log out',
       className: 'flex gap-x-2 items-center relative py-5',

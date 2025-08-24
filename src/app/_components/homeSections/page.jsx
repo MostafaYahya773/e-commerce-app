@@ -59,13 +59,9 @@ export default memo(function HomeSections({ title, data, loading, type }) {
     setFullIdToWishlist((prev) => prev + id);
   };
   return (
-    <div className="border-b pb-80 border-opacity-20  border-black">
-      <div className="title">
-        <h1 className="font-archivo text-24 md:text-32 lg:text-48 text-center">
-          {title}
-        </h1>
-      </div>
-      <div className="info  flex gap-20 px-10 py-40 overflow-scroll font-roboto ">
+    <div className="border-b pb-50 border-opacity-20 border-black">
+      <h1 className="font-archivo text-32 lg:text-48 text-center">{title}</h1>
+      <div className="info flex gap-20 px-10 py-20 md:py-40 overflow-scroll font-roboto ">
         {loading ? (
           <div className="flex justify-center items-center w-full h-full">
             <span className="loader"></span>
@@ -89,13 +85,13 @@ export default memo(function HomeSections({ title, data, loading, type }) {
                     }}
                   />
                 </div>
-                <div className="name text-20 font-bold px-10 mb-10">
+                <h2 className="name text-20 font-bold px-10 mb-10">
                   {item?.title.slice(0, 20)}
-                </div>
+                </h2>
                 <div className="rate flex items-center gap-1 px-10 mb-10">
                   <StarRating rate={item?.ratingsAverage} />
                 </div>
-                <div className="priceDetails font-bold px-10 flex gap-10">
+                <h3 className="priceDetails font-bold px-10 flex gap-10">
                   {item?.priceAfterDiscount ? (
                     <span>{`$${item.priceAfterDiscount}`}</span>
                   ) : (
@@ -107,7 +103,7 @@ export default memo(function HomeSections({ title, data, loading, type }) {
                   ) : (
                     <span>{`$${item?.price}`}</span>
                   )}
-                </div>
+                </h3>
               </Link>
               <div className=" flex gap-5 absolute right-5 bottom-5 opacity-40">
                 <button

@@ -66,6 +66,7 @@ export const UserProvider = ({ children }) => {
   const [AddressId, setAddressId] = useState(null);
   // get current address
   const [currentAddress, setCurrentAddress] = useState(null);
+  //brands name
   return (
     <UserContext.Provider
       value={{

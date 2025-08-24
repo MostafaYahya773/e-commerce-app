@@ -1,418 +1,199 @@
 'use client';
-import useRequest from '@/hooks/useRequest';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import React, { useMemo, useState } from 'react';
+import { useParams } from 'next/navigation';
+import toast from 'react-hot-toast';
+
+import useRequest from '@/hooks/useRequest';
+import useCart from '@/hooks/(cart)/useCart';
+import useWishlist from '@/hooks/(wishList)/useWishlist';
+
+import CustomHero from '@/app/_components/customHero/page';
+import SwitchSliderSwiper from '../../_components/SwitchSliderSwiper/page';
 import StarRating from '../../_components/starRating/page';
 import LoadingAnimation from '../../_components/LoadingAnimation/page';
-import useCart from '@/hooks/(cart)/useCart';
-import toast from 'react-hot-toast';
-import SwitchSliderSwiper from '../../_components/SwitchSliderSwiper/page';
-import useWishlist from '@/hooks/(wishList)/useWishlist';
-import { useParams } from 'next/navigation';
-import CustomHero from '@/app/_components/customHero/page';
 
-export default function viewProduct() {
+export default function ViewProduct() {
   const { type } = useParams();
-  // chick if cart is add or not
+
+  // states
+  const [filterType, setFilterType] = useState('all');
   const [isAdd, setIsAdd] = useState(null);
-  // get all id
-  const [fullId, setFullId] = useState([]);
-  //check if cart is add or not to wishlist
   const [isAddToWishlist, setIsAddToWishlist] = useState(null);
-  //get all id to add to wishlist
+  const [fullId, setFullId] = useState([]);
   const [fullIdToWishlist, setFullIdToWishlist] = useState([]);
-  // get data from api
+
+  const productsType = [
+    { name: 'All', value: 'all' },
+    { name: "Men's", value: "Men's" },
+    { name: "Women's", value: "Women's" },
+  ];
+
+  // API requests
   const { data, isLoading } = useRequest('products');
-  //add to wishlist
-  const { mutate: addToWishlist } = useWishlist();
-  //add products to cart
   const { mutate: addToCart } = useCart();
-  // filter data top selling
-  const topSellingData = useMemo(
-    () => data?.data?.slice(0, 33).filter((item) => item?.ratingsAverage >= 4),
-    [data]
-  );
-  // filter data new arrivals
-  const newArrivalsData = useMemo(() => {
+  const { mutate: addToWishlist } = useWishlist();
+
+  // filtered products by category type
+  const filteredProducts = useMemo(() => {
     if (!data?.data) return [];
-    return [...data.data]
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, 33);
-  }, [data]);
+    if (filterType === 'all') return data.data.slice(0, 33);
+    return data.data.filter((item) => item.category.name.includes(filterType));
+  }, [data?.data, filterType]);
 
-  // check if data is loading
+  // products to display based on 'type' param
+  const productsToShow = useMemo(() => {
+    if (decodeURIComponent(type) === 'top selling') {
+      return filteredProducts
+        .filter((item) => item.ratingsAverage >= 4)
+        .slice(0, 33);
+    } else {
+      return [...filteredProducts]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 33);
+    }
+  }, [filteredProducts, type]);
 
-  if (isLoading) return <LoadingAnimation />;
+  // handlers
+  const handleFilter = (value) => setFilterType(value);
+
   const handleAddToCart = (id) => {
     setIsAdd(id);
     addToCart(id, {
       onSuccess: (e) => {
         toast.success(e.data.message);
         setIsAdd(null);
+        setFullId((prev) => [...prev, id]);
       },
-      onError: (e) => {
-        toast.error(e.response.data.message);
-      },
+      onError: (e) => toast.error(e.response.data.message),
     });
   };
-  // handle add to cart
-  const handleFullId = (id) => {
-    setFullId((prev) => prev + id);
-  };
-  //handle add to wishlist
+
   const handleAddToWishlist = (id) => {
     setIsAddToWishlist(id);
     addToWishlist(id, {
-      onSuccess: (e) => {
-        toast.success('product added to wishlist successfully');
+      onSuccess: () => {
+        toast.success('Product added to wishlist successfully');
         setIsAddToWishlist(null);
+        setFullIdToWishlist((prev) => [...prev, id]);
       },
-      onError: (e) => {
-        toast.error(e.response.data.message);
-      },
+      onError: (e) => toast.error(e.response.data.message),
     });
   };
 
-  // handle add id to wishlist
-  const handleFullIdToWishlist = (id) => {
-    setFullIdToWishlist((prev) => [...prev, id]);
-  };
+  if (isLoading) return <LoadingAnimation />;
 
   return (
-    <div className="flex flex-col gap-y-10 md:mt-80 mt-50 mb-150 lg:mb-80 px-10 font-roboto">
-      <div>
-        <CustomHero
-          img={`${
-            decodeURIComponent(type) === 'top selling'
-              ? `/topselling.png`
-              : '/arrives.png'
-          }`}
-          title={`${
-            decodeURIComponent(type) === 'top selling'
-              ? 'Top Selling Products'
-              : 'New Arrivals Products'
-          }`}
-        />
+    <div className="flex flex-col gap-y-30 mb-150 lg:mb-80 px-10 font-roboto">
+      <CustomHero
+        img={
+          decodeURIComponent(type) === 'top selling'
+            ? `/topselling.png`
+            : '/arrives.png'
+        }
+        title={
+          decodeURIComponent(type) === 'top selling'
+            ? 'Top Selling Products'
+            : 'New Arrivals Products'
+        }
+        subtitle={
+          decodeURIComponent(type) === 'top selling'
+            ? "Discover the top-selling items that everyone can't stop talking about, crafted to bring style and comfort to your everyday life"
+            : "Check out our latest arrivals, fresh from the designers, and be the first to own the season's hottest styles"
+        }
+      />
+
+      <div className="type flex gap-40 justify-center items-center">
+        {productsType.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => handleFilter(item.value)}
+            className={`px-10 py-5 cursor-pointer ${
+              filterType === item.value
+                ? 'border-b border-black border-opacity-70 opacity-100'
+                : 'opacity-70'
+            }`}
+          >
+            {item.name}
+          </button>
+        ))}
       </div>
-      <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-10">
-        {decodeURIComponent(type) === 'top selling'
-          ? (topSellingData || []).map((item, index) => (
-              <div
-                key={index}
-                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
-              >
-                <Link
-                  aria-label="product details"
-                  href={`/productDetails/${item?._id}`}
-                >
-                  <div className="img">
-                    <SwitchSliderSwiper
-                      path="/viewProduct"
-                      images={item?.images}
-                      spaceBetween={20}
-                      arrows={false}
-                      dots={true}
-                    />
-                  </div>
-                  <div className="name text-16 md:text-20 font-bold mb-10">
-                    {item?.title.split(' ').slice(0, 3).join(' ')}
-                  </div>
-                  <div className="rate flex items-center gap-1 mb-10">
-                    <StarRating rate={item?.ratingsAverage} />
-                  </div>
-                  <div className="price flex justify-between items-center">
-                    <div className="priceDetails font-bold flex gap-10">
-                      {item?.priceAfterDiscount ? (
-                        <span>{`$${item.priceAfterDiscount}`}</span>
-                      ) : (
-                        ''
-                      )}
-                      {item?.priceAfterDiscount ? (
-                        <del className="opacity-40">{`$${item?.price}`}</del>
-                      ) : (
-                        <span>{`$${item?.price}`}</span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
-                  <button
-                    onClick={() => {
-                      handleAddToWishlist(item?._id);
-                      handleFullIdToWishlist(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAddToWishlist === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullIdToWishlist.includes(item?._id)
-                            ? 'text-descount-color'
-                            : ''
-                        } fa-solid fa-heart`}
-                      ></i>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleAddToCart(item?._id);
-                      handleFullId(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAdd === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                        } fa-solid fa-cart-shopping`}
-                      ></i>
-                    )}
-                  </button>
+
+      {/* Products Grid */}
+      <div className="grid gap-10 md:gap-30 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {productsToShow.map((item, index) => (
+          <div
+            key={index}
+            className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
+          >
+            <Link
+              aria-label="product details"
+              href={`/productDetails/${item?._id}`}
+            >
+              <div className="img">
+                <SwitchSliderSwiper
+                  path="/viewProduct"
+                  images={item?.images}
+                  spaceBetween={20}
+                  arrows={false}
+                  dots={true}
+                />
+              </div>
+              <div className="name text-16 md:text-20 font-bold mb-10">
+                {item?.title.split(' ').slice(0, 3).join(' ')}
+              </div>
+              <div className="rate flex items-center gap-1 mb-10">
+                <StarRating rate={item?.ratingsAverage} />
+              </div>
+              <div className="price flex justify-between items-center">
+                <div className="priceDetails font-bold flex gap-10">
+                  {item?.priceAfterDiscount ? (
+                    <>
+                      <span>{`$${item.priceAfterDiscount}`}</span>
+                      <del className="opacity-40">{`$${item?.price}`}</del>
+                    </>
+                  ) : (
+                    <span>{`$${item?.price}`}</span>
+                  )}
                 </div>
               </div>
-            ))
-          : (newArrivalsData || []).map((item, index) => (
-              <div
-                key={index}
-                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
+            </Link>
+
+            {/* Wishlist & Cart Buttons */}
+            <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
+              <button
+                onClick={() => handleAddToWishlist(item?._id)}
+                className="text-18 md:text-20 px-2"
               >
-                <Link
-                  aria-label="product details"
-                  href={`/productDetails/${item?._id}`}
-                >
-                  <div className="img">
-                    <SwitchSliderSwiper
-                      path="/viewProduct"
-                      images={item?.images}
-                      spaceBetween={20}
-                      arrows={false}
-                      dots={true}
-                    />
-                  </div>
-                  <div className="name text-16 md:text-20 font-bold mb-10">
-                    {item?.title.split(' ').slice(0, 3).join(' ')}
-                  </div>
-                  <div className="rate flex items-center gap-1 mb-10">
-                    <StarRating rate={item?.ratingsAverage} />
-                  </div>
-                  <div className="price flex justify-between items-center">
-                    <div className="priceDetails font-bold flex gap-10">
-                      {item?.priceAfterDiscount ? (
-                        <span>{`$${item.priceAfterDiscount}`}</span>
-                      ) : (
-                        ''
-                      )}
-                      {item?.priceAfterDiscount ? (
-                        <del className="opacity-40">{`$${item?.price}`}</del>
-                      ) : (
-                        <span>{`$${item?.price}`}</span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
-                  <button
-                    onClick={() => {
-                      handleAddToWishlist(item?._id);
-                      handleFullIdToWishlist(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAddToWishlist === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullIdToWishlist.includes(item?._id)
-                            ? 'text-descount-color'
-                            : ''
-                        } fa-solid fa-heart`}
-                      ></i>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleAddToCart(item?._id);
-                      handleFullId(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAdd === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                        } fa-solid fa-cart-shopping`}
-                      ></i>
-                    )}
-                  </button>
-                </div>
-              </div>
-            ))}
-        {decodeURIComponent(type) === 'top selling'
-          ? (topSellingData || []).map((item, index) => (
-              <div
-                key={index}
-                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
+                {isAddToWishlist === item?._id ? (
+                  <span className="loaderCount"></span>
+                ) : (
+                  <i
+                    className={`${
+                      fullIdToWishlist.includes(item?._id)
+                        ? 'text-descount-color'
+                        : ''
+                    } fa-solid fa-heart`}
+                  ></i>
+                )}
+              </button>
+              <button
+                onClick={() => handleAddToCart(item?._id)}
+                className="text-18 md:text-20 px-2"
               >
-                <Link
-                  aria-label="product details"
-                  href={`/productDetails/${item?._id}`}
-                >
-                  <div className="img">
-                    <SwitchSliderSwiper
-                      path="/viewProduct"
-                      images={item?.images}
-                      spaceBetween={20}
-                      arrows={false}
-                      dots={true}
-                    />
-                  </div>
-                  <div className="name text-16 md:text-20 font-bold mb-10">
-                    {item?.title.split(' ').slice(0, 3).join(' ')}
-                  </div>
-                  <div className="rate flex items-center gap-1 mb-10">
-                    <StarRating rate={item?.ratingsAverage} />
-                  </div>
-                  <div className="price flex justify-between items-center">
-                    <div className="priceDetails font-bold flex gap-10">
-                      {item?.priceAfterDiscount ? (
-                        <span>{`$${item.priceAfterDiscount}`}</span>
-                      ) : (
-                        ''
-                      )}
-                      {item?.priceAfterDiscount ? (
-                        <del className="opacity-40">{`$${item?.price}`}</del>
-                      ) : (
-                        <span>{`$${item?.price}`}</span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
-                  <button
-                    onClick={() => {
-                      handleAddToWishlist(item?._id);
-                      handleFullIdToWishlist(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAddToWishlist === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullIdToWishlist.includes(item?._id)
-                            ? 'text-descount-color'
-                            : ''
-                        } fa-solid fa-heart`}
-                      ></i>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleAddToCart(item?._id);
-                      handleFullId(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAdd === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                        } fa-solid fa-cart-shopping`}
-                      ></i>
-                    )}
-                  </button>
-                </div>
-              </div>
-            ))
-          : (newArrivalsData || []).map((item, index) => (
-              <div
-                key={index}
-                className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
-              >
-                <Link
-                  aria-label="product details"
-                  href={`/productDetails/${item?._id}`}
-                >
-                  <div className="img">
-                    <SwitchSliderSwiper
-                      path="/viewProduct"
-                      images={item?.images}
-                      spaceBetween={20}
-                      arrows={false}
-                      dots={true}
-                    />
-                  </div>
-                  <div className="name text-16 md:text-20 font-bold mb-10">
-                    {item?.title.split(' ').slice(0, 3).join(' ')}
-                  </div>
-                  <div className="rate flex items-center gap-1 mb-10">
-                    <StarRating rate={item?.ratingsAverage} />
-                  </div>
-                  <div className="price flex justify-between items-center">
-                    <div className="priceDetails font-bold flex gap-10">
-                      {item?.priceAfterDiscount ? (
-                        <span>{`$${item.priceAfterDiscount}`}</span>
-                      ) : (
-                        ''
-                      )}
-                      {item?.priceAfterDiscount ? (
-                        <del className="opacity-40">{`$${item?.price}`}</del>
-                      ) : (
-                        <span>{`$${item?.price}`}</span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-                <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
-                  <button
-                    onClick={() => {
-                      handleAddToWishlist(item?._id);
-                      handleFullIdToWishlist(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAddToWishlist === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullIdToWishlist.includes(item?._id)
-                            ? 'text-descount-color'
-                            : ''
-                        } fa-solid fa-heart`}
-                      ></i>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleAddToCart(item?._id);
-                      handleFullId(item?._id);
-                    }}
-                    className="text-18 md:text:20 px-2"
-                  >
-                    {isAdd === item?._id ? (
-                      <span className="loaderCount"></span>
-                    ) : (
-                      <i
-                        className={`${
-                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                        } fa-solid fa-cart-shopping`}
-                      ></i>
-                    )}
-                  </button>
-                </div>
-              </div>
-            ))}
+                {isAdd === item?._id ? (
+                  <span className="loaderCount"></span>
+                ) : (
+                  <i
+                    className={`${
+                      fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                    } fa-solid fa-cart-shopping`}
+                  ></i>
+                )}
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

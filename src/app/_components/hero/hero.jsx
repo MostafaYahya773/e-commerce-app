@@ -45,7 +45,7 @@ export default function Hero() {
     },
   ]);
   return (
-    <div className="flex flex-col md:mt-80 mt-30">
+    <div className="flex flex-col md:mt-80 mt-30 pb-50 border-b border-opacity-20 border-black">
       <div className="grid grid-rows-2 md:grid-rows-none md:grid-cols-2 gap-x-20 px-5  ">
         <div className="text flex flex-col gap-y-35 justify-center py-40">
           <div className="title flex flex-col gap-y-20">
@@ -90,24 +90,6 @@ export default function Hero() {
             height={100}
             priority
           />
-        </div>
-      </div>
-      <div>
-        <div className="sponsor absolute left-0 right-0 p-20 bg-black max-w-[1700px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 items-center gap-10">
-            {sponsor.map((item) => (
-              <div key={item.id} className="mx-auto">
-                <Image
-                  src={item.img}
-                  alt="sponsor"
-                  className="p-10"
-                  width={100}
-                  height={200}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
