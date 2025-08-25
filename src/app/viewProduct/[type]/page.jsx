@@ -119,7 +119,6 @@ export default function ViewProduct() {
         ))}
       </div>
 
-      {/* Products Grid */}
       <div className="grid gap-10 md:gap-30 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {productsToShow.map((item, index) => (
           <div

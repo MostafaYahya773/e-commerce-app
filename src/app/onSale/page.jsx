@@ -11,6 +11,13 @@ import SwitchSliderSwiper from '../_components/SwitchSliderSwiper/page';
 import CustomHero from '../_components/customHero/page';
 
 export default function viewProduct() {
+  //select type
+  const productsType = [
+    { name: 'All', value: 'all' },
+    { name: "Men's", value: "Men's" },
+    { name: "Women's", value: "Women's" },
+  ];
+  const [filterType, setFilterType] = useState('all');
   // chick if cart is add or not
   const [isAdd, setIsAdd] = useState(null);
   // get all id
@@ -22,10 +29,11 @@ export default function viewProduct() {
   // get data from api
   const { data, isLoading } = useRequest('products');
   // filter date
-  const dataOffer = useMemo(
-    () => data?.data.slice(0, 35)?.filter((item) => item.priceAfterDiscount),
-    [data]
-  );
+  const filteredProducts = useMemo(() => {
+    if (!data?.data) return [];
+    if (filterType === 'all') return data.data.slice(0, 33);
+    return data.data.filter((item) => item.category.name.includes(filterType));
+  }, [data?.data, filterType]);
   //add to wishlist
   const { mutate: addToWishlist } = useWishlist();
   //add products to cart
@@ -66,9 +74,10 @@ export default function viewProduct() {
   const handleFullIdToWishlist = (id) => {
     setFullIdToWishlist((prev) => [...prev, id]);
   };
-
+  //function to filter
+  const handleFilter = (value) => setFilterType(value);
   return (
-    <div className="flex flex-col gap-y-10  mb-150 lg:mb-80 px-10">
+    <div className="flex flex-col gap-y-20 mb-150 lg:mb-80 px-10">
       <div>
         <CustomHero
           img="/sale.png"
@@ -76,8 +85,25 @@ export default function viewProduct() {
           subtitle="Discover unbeatable deals with our exclusive On Sale collection, where top-quality products meet exceptional discounts"
         />
       </div>
-      <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-15 ">
-        {dataOffer?.map((item, index) => (
+
+      <div className="type flex gap-40 justify-center items-center">
+        {productsType.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => handleFilter(item.value)}
+            className={`px-10 py-5 cursor-pointer ${
+              filterType === item.value
+                ? 'border-b border-black border-opacity-70 opacity-100'
+                : 'opacity-70'
+            }`}
+          >
+            {item.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+        {filteredProducts?.map((item, index) => (
           <div
             key={index}
             className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"

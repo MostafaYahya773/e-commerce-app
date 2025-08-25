@@ -9,7 +9,7 @@ const HomeComments = React.memo(({ item }) => {
       </div>
 
       <div className="name flex items-center gap-5">
-        <h1 className="font-bold text-20 font-roboto">{item?.name}.</h1>
+        <h2 className="font-bold text-20 font-roboto">{item?.name}.</h2>
         <i className={`${item?.mark} text-verfied-color`}></i>
       </div>
 

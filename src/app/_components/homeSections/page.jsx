@@ -21,7 +21,7 @@ export default memo(function HomeSections({ title, data, loading, type }) {
   //get all id to add to wishlist
   const [fullIdToWishlist, setFullIdToWishlist] = useState([]);
   // select data to show in home page
-  const dataToShow = useMemo(() => data?.slice(16, 20), [data]);
+  const dataToShow = useMemo(() => data?.slice(10, 18), [data]);
   // handle add to cart
   const handleAddToCart = (id) => {
     setIsAdd(id);
@@ -58,55 +58,57 @@ export default memo(function HomeSections({ title, data, loading, type }) {
   const handleFullIdToWishlist = (id) => {
     setFullIdToWishlist((prev) => prev + id);
   };
+
   return (
     <div className="border-b pb-50 border-opacity-20 border-black">
-      <h1 className="font-archivo text-32 lg:text-48 text-center">{title}</h1>
-      <div className="info flex gap-20 px-10 py-20 md:py-40 overflow-scroll font-roboto ">
+      <h2 className="font-archivo text-32 lg:text-48 text-center">{title}</h2>
+      <div className="info grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 px-10 py-20 md:py-40 font-roboto ">
         {loading ? (
-          <div className="flex justify-center items-center w-full h-full">
+          <div className="flex items-center justify-center w-full h-full">
             <span className="loader"></span>
           </div>
         ) : (
           dataToShow?.map((item, index) => (
-            <div
+            <Link
+              href={`/productDetails/${item?._id}`}
               key={index}
-              className="relative info flex p-10 product-shadow rounded-md flex-col gap-y-5 w-[250px] flex-shrink-0 grow shadow-lg"
+              className="relative info p-10 product-shadow rounded-md
+            flex flex-col gap-y-5 shadow-lg "
             >
-              <Link href={`/productDetails/${item?._id}`}>
-                <div className="img">
-                  <SwitchSliderSwiper
-                    path="/home"
-                    images={item?.images}
-                    spaceBetween={20}
-                    arrows={false}
-                    dots={true}
-                    breakpoints={{
-                      480: { slidesPerView: 1 },
-                    }}
-                  />
-                </div>
-                <h2 className="name text-20 font-bold px-10 mb-10">
-                  {item?.title.slice(0, 20)}
-                </h2>
-                <div className="rate flex items-center gap-1 px-10 mb-10">
-                  <StarRating rate={item?.ratingsAverage} />
-                </div>
-                <h3 className="priceDetails font-bold px-10 flex gap-10">
-                  {item?.priceAfterDiscount ? (
-                    <span>{`$${item.priceAfterDiscount}`}</span>
-                  ) : (
-                    ''
-                  )}
+              <div className="img">
+                <SwitchSliderSwiper
+                  path="/home"
+                  images={item?.images}
+                  spaceBetween={20}
+                  arrows={false}
+                  dots={true}
+                  breakpoints={{
+                    480: { slidesPerView: 1 },
+                  }}
+                />
+              </div>
+              <h3 className="name text-16 md:text-20 font-bold">
+                {item?.title.split(' ').slice(0, 3).join(' ')}
+              </h3>
+              <div className="rate flex items-center gap-1">
+                <StarRating rate={item?.ratingsAverage} />
+              </div>
+              <h3 className="priceDetails font-bold  flex gap-10">
+                {item?.priceAfterDiscount ? (
+                  <span>{`$${item.priceAfterDiscount}`}</span>
+                ) : (
+                  ''
+                )}
 
-                  {item?.priceAfterDiscount ? (
-                    <del className="opacity-40">{`$${item?.price}`}</del>
-                  ) : (
-                    <span>{`$${item?.price}`}</span>
-                  )}
-                </h3>
-              </Link>
+                {item?.priceAfterDiscount ? (
+                  <del className="opacity-40">{`$${item?.price}`}</del>
+                ) : (
+                  <span>{`$${item?.price}`}</span>
+                )}
+              </h3>
               <div className=" flex gap-5 absolute right-5 bottom-5 opacity-40">
                 <button
+                  aria-label="add to wishlist"
                   onClick={() => {
                     handleAddToWishlist(item?._id),
                       handleFullIdToWishlist(item?._id);
@@ -126,6 +128,7 @@ export default memo(function HomeSections({ title, data, loading, type }) {
                   )}
                 </button>
                 <button
+                  aria-label="add to cart"
                   onClick={() => {
                     handleAddToCart(item?._id), handleFullId(item?._id);
                   }}
@@ -142,7 +145,7 @@ export default memo(function HomeSections({ title, data, loading, type }) {
                   )}
                 </button>
               </div>
-            </div>
+            </Link>
           ))
         )}
       </div>
@@ -152,6 +155,7 @@ export default memo(function HomeSections({ title, data, loading, type }) {
         } w-full flex justify-center items-center `}
       >
         <Link
+          aria-label="view all products"
           href={`/viewProduct/${type}`}
           className=" w-fit px-45 py-5 border-opacity-20 border border-black rounded-full  font-roboto font-medium text-18"
         >

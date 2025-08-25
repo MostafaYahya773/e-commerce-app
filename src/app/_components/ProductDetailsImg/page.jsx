@@ -7,9 +7,9 @@ const ProductDetailsImg = React.memo(({ item, index }) => {
       <Image
         src={item}
         width={300}
-        height={300}
+        height={100}
         alt="img"
-        className="rounded-2xl mx-auto"
+        className="rounded-2xl mx-auto "
         loading={index === 0 ? 'eager' : 'lazy'}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />

@@ -59,9 +59,9 @@ export default function Navbar() {
   return (
     <div className=" fixed top-0 left-0 right-0 z-[101] w-full  bg-white  max-w-[2000px] shadow-md px-10 py-2 font-roboto mx-auto">
       <div className="flex relative justify-between   md:grid md:gap-x-20  md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px] items-center ">
-        <div className="logo text-24 md:text-32 font-bold">
+        <h2 className="logo text-24 md:text-32 font-bold">
           <Link href="/">Shop.co</Link>
-        </div>
+        </h2>
         <div className="hidden md:flex links text-16 ">
           <ul className="flex items-center md:gap-x-10  font-normal ">
             {links.map((link) => (
