@@ -29,7 +29,7 @@ export default function WishList() {
   if (isFetching) return <LoadingFetch />;
 
   // check if product exist
-  if (WishListProducts.count === 0)
+  if (WishListProducts?.count === 0)
     return (
       <EmptyProducts
         src={'/shopping-cart-Empty.png'}
@@ -46,7 +46,7 @@ export default function WishList() {
         setUpdatingIdToDel(null);
       },
       onError: (e) => {
-        toast.error(e.data.status);
+        toast.error(e?.data?.status);
       },
     });
   };
