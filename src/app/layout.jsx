@@ -5,6 +5,7 @@ import ReactQueryProvider from './_components/reactQueryProvider/page';
 import { UserProvider } from '@/context/useContext';
 import { Toaster } from 'react-hot-toast';
 import Footer from './_components/footer/page';
+import SessionProviderWrapper from './_components/sessionProvide/page';
 
 export const metadata = {
   title: 'Create Next App',
@@ -29,18 +30,20 @@ export default function RootLayout({ children }) {
       className={`${archivoText.variable} ${robotoText.variable}`}
     >
       <body className="bg-white max-w-[1300px] mx-auto ">
-        <ReactQueryProvider>
-          <UserProvider>
-            <Toaster />
-            <header>
-              <Nav />
-            </header>
-            <main className="min-h-screen">{children}</main>
-            <footer>
-              <Footer />
-            </footer>
-          </UserProvider>
-        </ReactQueryProvider>
+        <SessionProviderWrapper>
+          <ReactQueryProvider>
+            <UserProvider>
+              <Toaster />
+              <header>
+                <Nav />
+              </header>
+              <main className="min-h-screen">{children}</main>
+              <footer>
+                <Footer />
+              </footer>
+            </UserProvider>
+          </ReactQueryProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

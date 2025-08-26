@@ -1,16 +1,17 @@
 'use client';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-
-export default function useUsedOrders(CardId) {
+import { UserContext } from '@/context/useContext';
+import { useContext } from 'react';
+export default function useUsedOrders() {
   // create the function to use fetch
   const queryClient = useQueryClient();
+  // get token from context
+  const { userId } = useContext(UserContext);
 
   const getData = () => {
     return axios
-      .get(
-        `https://ecommerce.routemisr.com/api/v1/orders/user/6500c8604bb5270034f2012b`
-      )
+      .get(`https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`)
       .then((response) => {
         return response;
       })
@@ -22,6 +23,7 @@ export default function useUsedOrders(CardId) {
     queryKey: ['UserOrder'],
     queryFn: getData,
     select: (data) => data?.data,
+    enabled: !!userId,
     onSuccess: () => {
       queryClient.invalidateQueries(['UserOrder']);
     },

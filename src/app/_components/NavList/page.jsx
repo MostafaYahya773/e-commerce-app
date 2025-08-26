@@ -1,11 +1,12 @@
 'use client';
 
+import { UserContext } from '@/context/useContext';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 export default function NavList() {
   const [isOpen, setIsOpen] = useState(true);
-
+  const { logOut } = useContext(UserContext);
   const links = [
     {
       href: '/',
@@ -45,6 +46,7 @@ export default function NavList() {
       icon: 'fa-right-from-bracket',
       label: 'Log out',
       className: 'flex gap-x-2 items-center relative py-5',
+      onclick: () => logOut(),
     },
   ];
 
@@ -55,7 +57,10 @@ export default function NavList() {
       {links.map((link, index) => (
         <Link
           key={index}
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false);
+            if (link.onclick) link.onclick();
+          }}
           href={link.href}
           className={link.className}
         >

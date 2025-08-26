@@ -1,19 +1,17 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-
+import { UserContext } from '@/context/useContext';
+import { useContext } from 'react';
 export default function useRequest(endPonts, id = '') {
-  // create the function to use fetch
+  // get token from context
+  const { token } = useContext(UserContext);
   const getData = () => {
-    let headers = {
-      token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDBjODYwNGJiNTI3MDAzNGYyMDEyYiIsImlhdCI6MTc1NTMxNTkyMywiZXhwIjoxNzYzMDkxOTIzfQ.gag7WC7H6YPEI7BTqYoLncl4JRIr2R5LVaXvIzRA27o',
-    };
     const url = id
       ? `https://ecommerce.routemisr.com/api/v1/${endPonts}/${id}`
       : `https://ecommerce.routemisr.com/api/v1/${endPonts}`;
     return axios
-      .get(url, { headers })
+      .get(url, { headers: { token } })
       .then((response) => {
         return response;
       })
@@ -24,7 +22,8 @@ export default function useRequest(endPonts, id = '') {
   const data = useQuery({
     queryKey: [endPonts, id],
     queryFn: getData,
-    enabled: id !== undefined,
+    enabled: !!token,
+    // enabled: id !== undefined,
     select: (data) => data?.data,
     staleTime: 1000 * 60 * 60 * 24,
     cacheTime: 1000 * 60 * 60 * 24,

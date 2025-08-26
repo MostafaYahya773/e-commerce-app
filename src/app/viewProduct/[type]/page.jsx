@@ -126,8 +126,9 @@ export default function ViewProduct() {
             className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
           >
             <Link
-              aria-label="product details"
+              aria-label="to product details"
               href={`/productDetails/${item?._id}`}
+              className="flex flex-col gap-y-7"
             >
               <div className="img">
                 <SwitchSliderSwiper
@@ -138,14 +139,14 @@ export default function ViewProduct() {
                   dots={true}
                 />
               </div>
-              <div className="name text-16 md:text-20 font-bold mb-10">
-                {item?.title.split(' ').slice(0, 3).join(' ')}
-              </div>
-              <div className="rate flex items-center gap-1 mb-10">
-                <StarRating rate={item?.ratingsAverage} />
-              </div>
-              <div className="price flex justify-between items-center">
-                <div className="priceDetails font-bold flex gap-10">
+              <div className="grid grid-rows-[auto_auto_auto] items-center h-full gap-y-7">
+                <h2 className="name text-16 md:text-20 font-bold mb-10">
+                  {item?.title.split(' ').slice(0, 3).join(' ')}
+                </h2>
+                <div className="rate flex items-center gap-1 mb-10">
+                  <StarRating rate={item?.ratingsAverage} />
+                </div>
+                <h3 className="priceDetails font-bold flex gap-10">
                   {item?.priceAfterDiscount ? (
                     <>
                       <span>{`$${item.priceAfterDiscount}`}</span>
@@ -154,13 +155,13 @@ export default function ViewProduct() {
                   ) : (
                     <span>{`$${item?.price}`}</span>
                   )}
-                </div>
+                </h3>
               </div>
             </Link>
 
-            {/* Wishlist & Cart Buttons */}
             <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
               <button
+                aria-label="add to wishlist"
                 onClick={() => handleAddToWishlist(item?._id)}
                 className="text-18 md:text-20 px-2"
               >
@@ -177,6 +178,7 @@ export default function ViewProduct() {
                 )}
               </button>
               <button
+                aria-label="add to cart"
                 onClick={() => handleAddToCart(item?._id)}
                 className="text-18 md:text-20 px-2"
               >

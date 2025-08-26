@@ -1,16 +1,15 @@
 'use client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-
+import { UserContext } from '@/context/useContext';
+import { useContext } from 'react';
 export default function useUpdateCount() {
   // create the function to use fetch
   const queryClient = useQueryClient();
+  // get token from context
+  const { token } = useContext(UserContext);
 
   const getData = ({ id, count }) => {
-    let headers = {
-      token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDBjODYwNGJiNTI3MDAzNGYyMDEyYiIsImlhdCI6MTc1NTMxNTkyMywiZXhwIjoxNzYzMDkxOTIzfQ.gag7WC7H6YPEI7BTqYoLncl4JRIr2R5LVaXvIzRA27o',
-    };
     return axios
       .put(
         `https://ecommerce.routemisr.com/api/v1/Cart/${id}`,
@@ -18,7 +17,9 @@ export default function useUpdateCount() {
           count,
         },
         {
-          headers,
+          headers: {
+            token,
+          },
         }
       )
       .then((response) => {

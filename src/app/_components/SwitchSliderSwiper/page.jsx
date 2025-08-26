@@ -37,7 +37,7 @@ export default function SwitchSliderSwiper({
   const slides = isHome ? comments : images;
 
   return (
-    <div ref={ref} className="flex flex-col">
+    <div ref={ref} className="flex flex-col ">
       {inView && (
         <Swiper
           className="w-full"

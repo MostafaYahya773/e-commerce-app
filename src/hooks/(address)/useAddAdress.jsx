@@ -1,26 +1,22 @@
 'use client';
+import { UserContext } from '@/context/useContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useContext } from 'react';
 
 export default function useAddAdress() {
   // create the function to use fetch
   const queryClient = useQueryClient();
+  // get token from context
+  const { token } = useContext(UserContext);
 
   const getData = (values) => {
-    let headers = {
-      token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDBjODYwNGJiNTI3MDAzNGYyMDEyYiIsImlhdCI6MTc1NTMxNTkyMywiZXhwIjoxNzYzMDkxOTIzfQ.gag7WC7H6YPEI7BTqYoLncl4JRIr2R5LVaXvIzRA27o',
-    };
     return axios
-      .post(
-        `https://ecommerce.routemisr.com/api/v1/addresses`,
-
-        values,
-
-        {
-          headers,
-        }
-      )
+      .post(`https://ecommerce.routemisr.com/api/v1/addresses`, values, {
+        headers: {
+          token,
+        },
+      })
       .then((response) => {
         return response;
       })

@@ -42,7 +42,6 @@ export default function Home() {
           title="New Arrivals"
           data={newArrivalsData}
           type={'new arrivals'}
-          loading={isLoading}
         />
       </div>
       <div className="top-selling-section ">
@@ -50,7 +49,6 @@ export default function Home() {
           title="Top Selling"
           data={topSellingData}
           type={'top selling'}
-          loading={isLoading}
         />
       </div>
       <div className="browse">

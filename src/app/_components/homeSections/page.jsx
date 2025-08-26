@@ -7,7 +7,7 @@ import { memo, useMemo, useState } from 'react';
 import SwitchSliderSwiper from '../SwitchSliderSwiper/page';
 import useCart from '@/hooks/(cart)/useCart';
 import useWishlist from '@/hooks/(wishList)/useWishlist';
-export default memo(function HomeSections({ title, data, loading, type }) {
+export default memo(function HomeSections({ title, data, type }) {
   // add to cart
   const { mutate: addToCart } = useCart();
   //add to wishlist
@@ -63,30 +63,26 @@ export default memo(function HomeSections({ title, data, loading, type }) {
     <div className="border-b pb-50 border-opacity-20 border-black">
       <h2 className="font-archivo text-32 lg:text-48 text-center">{title}</h2>
       <div className="info grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 px-10 py-20 md:py-40 font-roboto ">
-        {loading ? (
-          <div className="flex items-center justify-center w-full h-full">
-            <span className="loader"></span>
-          </div>
-        ) : (
-          dataToShow?.map((item, index) => (
-            <Link
-              href={`/productDetails/${item?._id}`}
-              key={index}
-              className="relative info p-10 product-shadow rounded-md
+        {dataToShow?.map((item, index) => (
+          <Link
+            href={`/productDetails/${item?._id}`}
+            key={index}
+            className="relative info p-10 product-shadow rounded-md
             flex flex-col gap-y-5 shadow-lg "
-            >
-              <div className="img">
-                <SwitchSliderSwiper
-                  path="/home"
-                  images={item?.images}
-                  spaceBetween={20}
-                  arrows={false}
-                  dots={true}
-                  breakpoints={{
-                    480: { slidesPerView: 1 },
-                  }}
-                />
-              </div>
+          >
+            <div className="img">
+              <SwitchSliderSwiper
+                path="/home"
+                images={item?.images}
+                spaceBetween={20}
+                arrows={false}
+                dots={true}
+                breakpoints={{
+                  480: { slidesPerView: 1 },
+                }}
+              />
+            </div>
+            <div className="grid grid-rows-[auto_auto_auto] gap-y-5 h-full items-center">
               <h3 className="name text-16 md:text-20 font-bold">
                 {item?.title.split(' ').slice(0, 3).join(' ')}
               </h3>
@@ -106,48 +102,48 @@ export default memo(function HomeSections({ title, data, loading, type }) {
                   <span>{`$${item?.price}`}</span>
                 )}
               </h3>
-              <div className=" flex gap-5 absolute right-5 bottom-5 opacity-40">
-                <button
-                  aria-label="add to wishlist"
-                  onClick={() => {
-                    handleAddToWishlist(item?._id),
-                      handleFullIdToWishlist(item?._id);
-                  }}
-                  className="text-18 md:text:20 px-2"
-                >
-                  {isAddToWishlist === item?._id ? (
-                    <span className="loaderCount"></span>
-                  ) : (
-                    <i
-                      className={` ${
-                        fullIdToWishlist.includes(item?._id)
-                          ? 'text-descount-color'
-                          : ''
-                      } fa-solid fa-heart`}
-                    ></i>
-                  )}
-                </button>
-                <button
-                  aria-label="add to cart"
-                  onClick={() => {
-                    handleAddToCart(item?._id), handleFullId(item?._id);
-                  }}
-                  className="text-18 md:text:20 px-2"
-                >
-                  {isAdd === item?._id ? (
-                    <span className="loaderCount"></span>
-                  ) : (
-                    <i
-                      className={` ${
-                        fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                      } fa-solid fa-cart-shopping`}
-                    ></i>
-                  )}
-                </button>
-              </div>
-            </Link>
-          ))
-        )}
+            </div>
+            <div className=" flex gap-5 absolute right-5 bottom-5 opacity-40">
+              <button
+                aria-label="add to wishlist"
+                onClick={() => {
+                  handleAddToWishlist(item?._id),
+                    handleFullIdToWishlist(item?._id);
+                }}
+                className="text-18 md:text:20 px-2"
+              >
+                {isAddToWishlist === item?._id ? (
+                  <span className="loaderCount"></span>
+                ) : (
+                  <i
+                    className={` ${
+                      fullIdToWishlist.includes(item?._id)
+                        ? 'text-descount-color'
+                        : ''
+                    } fa-solid fa-heart`}
+                  ></i>
+                )}
+              </button>
+              <button
+                aria-label="add to cart"
+                onClick={() => {
+                  handleAddToCart(item?._id), handleFullId(item?._id);
+                }}
+                className="text-18 md:text:20 px-2"
+              >
+                {isAdd === item?._id ? (
+                  <span className="loaderCount"></span>
+                ) : (
+                  <i
+                    className={` ${
+                      fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                    } fa-solid fa-cart-shopping`}
+                  ></i>
+                )}
+              </button>
+            </div>
+          </Link>
+        ))}
       </div>
       <div
         className={` ${

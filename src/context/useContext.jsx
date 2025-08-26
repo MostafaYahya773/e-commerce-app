@@ -1,10 +1,38 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
-
+import { set } from 'date-fns';
+import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { createContext, useEffect, useState } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+  //  use router to duriction
+  const router = useRouter();
+  //get session
+  const { data: session, status } = useSession();
+  // set token
+  const [token, setToken] = useState(null);
+  //set id
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    if (status === 'authenticated' && session) {
+      setToken(session?.token);
+      setUserId(session?.user?.id);
+    } else {
+      router.push('/login');
+      setToken(null);
+      setUserId(null);
+    }
+  }, [status, session]);
+  const logOut = () => {
+    signOut({
+      redirect: true,
+      callbackUrl: '/login',
+    });
+    console.log(token);
+  };
+
   //share result of filter
   const [shareResult, setShareResult] = useState(null);
   //   all comments
@@ -66,7 +94,7 @@ export const UserProvider = ({ children }) => {
   const [AddressId, setAddressId] = useState(null);
   // get current address
   const [currentAddress, setCurrentAddress] = useState(null);
-  //brands name
+
   return (
     <UserContext.Provider
       value={{
@@ -81,6 +109,9 @@ export const UserProvider = ({ children }) => {
         setAddressId,
         currentAddress,
         setCurrentAddress,
+        token,
+        userId,
+        logOut,
       }}
     >
       {children}

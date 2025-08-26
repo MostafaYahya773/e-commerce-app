@@ -1,24 +1,25 @@
 'use client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-
+import { UserContext } from '@/context/useContext';
+import { useContext } from 'react';
 export default function useOnlineOrder(CardId) {
   // create the function to use fetch
   const queryClient = useQueryClient();
+  // get token from context
+  const { token } = useContext(UserContext);
 
   const getData = (data) => {
-    let headers = {
-      token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDBjODYwNGJiNTI3MDAzNGYyMDEyYiIsImlhdCI6MTc1NTMxNTkyMywiZXhwIjoxNzYzMDkxOTIzfQ.gag7WC7H6YPEI7BTqYoLncl4JRIr2R5LVaXvIzRA27o',
-    };
     return axios
       .post(
-        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=http://e-commerce-app-pi-seven.vercel.app/`,
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=http://localhost:3000`,
         {
           shippingAddress: data?.data,
         },
         {
-          headers,
+          headers: {
+            token,
+          },
         }
       )
       .then((response) => {
