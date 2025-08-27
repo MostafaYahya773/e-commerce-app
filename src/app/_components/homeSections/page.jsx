@@ -64,46 +64,47 @@ export default memo(function HomeSections({ title, data, type }) {
       <h2 className="font-archivo text-32 lg:text-48 text-center">{title}</h2>
       <div className="info grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 px-10 py-20 md:py-40 font-roboto ">
         {dataToShow?.map((item, index) => (
-          <Link
-            href={`/productDetails/${item?._id}`}
-            key={index}
-            className="relative info p-10 product-shadow rounded-md
-            flex flex-col gap-y-5 shadow-lg "
-          >
-            <div className="img">
-              <SwitchSliderSwiper
-                path="/home"
-                images={item?.images}
-                spaceBetween={20}
-                arrows={false}
-                dots={true}
-                breakpoints={{
-                  480: { slidesPerView: 1 },
-                }}
-              />
-            </div>
-            <div className="grid grid-rows-[auto_auto_auto] gap-y-5 h-full items-center">
-              <h3 className="name text-16 md:text-20 font-bold">
-                {item?.title.split(' ').slice(0, 3).join(' ')}
-              </h3>
-              <div className="rate flex items-center gap-1">
-                <StarRating rate={item?.ratingsAverage} />
+          <div key={index} className="relative">
+            <Link
+              href={`/productDetails/${item?._id}`}
+              className=" info p-10 product-shadow rounded-md
+            flex flex-col gap-y-5 shadow-lg z-10"
+            >
+              <div className="img">
+                <SwitchSliderSwiper
+                  path="/home"
+                  images={item?.images}
+                  spaceBetween={20}
+                  arrows={false}
+                  dots={true}
+                  breakpoints={{
+                    480: { slidesPerView: 1 },
+                  }}
+                />
               </div>
-              <h3 className="priceDetails font-bold  flex gap-10">
-                {item?.priceAfterDiscount ? (
-                  <span>{`$${item.priceAfterDiscount}`}</span>
-                ) : (
-                  ''
-                )}
+              <div className="grid grid-rows-[auto_auto_auto] gap-y-5 h-full items-center">
+                <h3 className="name text-16 md:text-20 font-bold">
+                  {item?.title.split(' ').slice(0, 3).join(' ')}
+                </h3>
+                <div className="rate flex items-center gap-1">
+                  <StarRating rate={item?.ratingsAverage} />
+                </div>
+                <h3 className="priceDetails font-bold  flex gap-10">
+                  {item?.priceAfterDiscount ? (
+                    <span>{`$${item.priceAfterDiscount}`}</span>
+                  ) : (
+                    ''
+                  )}
 
-                {item?.priceAfterDiscount ? (
-                  <del className="opacity-40">{`$${item?.price}`}</del>
-                ) : (
-                  <span>{`$${item?.price}`}</span>
-                )}
-              </h3>
-            </div>
-            <div className=" flex gap-5 absolute right-5 bottom-5 opacity-40">
+                  {item?.priceAfterDiscount ? (
+                    <del className="opacity-40">{`$${item?.price}`}</del>
+                  ) : (
+                    <span>{`$${item?.price}`}</span>
+                  )}
+                </h3>
+              </div>
+            </Link>
+            <div className=" flex gap-5 absolute z-20 right-5 bottom-5 opacity-40">
               <button
                 aria-label="add to wishlist"
                 onClick={() => {
@@ -142,7 +143,7 @@ export default memo(function HomeSections({ title, data, type }) {
                 )}
               </button>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
       <div

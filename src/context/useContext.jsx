@@ -1,6 +1,5 @@
 'use client';
 
-import { set } from 'date-fns';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { createContext, useEffect, useState } from 'react';
@@ -10,29 +9,33 @@ export const UserProvider = ({ children }) => {
   //  use router to duriction
   const router = useRouter();
   //get session
-  const { data: session, status } = useSession();
+  const { data: session, status, loading } = useSession();
   // set token
   const [token, setToken] = useState(null);
   //set id
   const [userId, setUserId] = useState(null);
   useEffect(() => {
+    if (status === 'loading') return;
     if (status === 'authenticated' && session) {
       setToken(session?.token);
       setUserId(session?.user?.id);
     } else {
-      router.push('/login');
       setToken(null);
       setUserId(null);
+      router.push('/login');
     }
   }, [status, session]);
-  const logOut = () => {
-    signOut({
-      redirect: true,
-      callbackUrl: '/login',
+  const logOut = async () => {
+    await signOut({
+      redirect: false,
     });
-    console.log(token);
+    router.push('/login');
   };
-
+  const handleClick = () => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  };
   //share result of filter
   const [shareResult, setShareResult] = useState(null);
   //   all comments
@@ -112,6 +115,9 @@ export const UserProvider = ({ children }) => {
         token,
         userId,
         logOut,
+        loading,
+        session,
+        handleClick,
       }}
     >
       {children}

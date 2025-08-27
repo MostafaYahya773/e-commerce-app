@@ -95,6 +95,9 @@ export default function Login() {
                     )}
                   </div>
                 ))}
+                <span className="forget text-12 ms-auto opacity-50">
+                  <Link href={'/ForgetPassword'}>Forget Password</Link>
+                </span>
                 <div className="btn flex flex-col gap-y-5">
                   <button
                     type="submit"

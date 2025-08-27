@@ -1,14 +1,17 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useWishlistData from '@/hooks/(wishList)/useWishlistData';
 import Image from 'next/image';
 import NavList from '../NavList/page';
 import useRequest from '@/hooks/useRequest';
+import { UserContext } from '@/context/useContext';
 
 export default function Navbar() {
-  // open and close settings
+  const { loading, session, handleClick } = useContext(UserContext);
+  if (loading) return;
+  // open and close setting
   const [isOpen, setIsOpem] = useState(false);
   // select path
   const path = usePathname();
@@ -47,7 +50,6 @@ export default function Navbar() {
   const [CountOfCart, setCountOfCart] = useState(0);
   //Wishlist count
   const [CountOfWishlist, setCountOfWishlist] = useState(0);
-
   const { data: CartNumber } = useRequest('cart');
   const { data: wishlistCount } = useWishlistData();
 
@@ -58,11 +60,16 @@ export default function Navbar() {
 
   return (
     <div className=" fixed top-0 left-0 right-0 z-[101] w-full  bg-white  max-w-[2000px] shadow-md px-10 py-2 font-roboto mx-auto">
-      <div className="flex relative justify-between   md:grid md:gap-x-20  md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px] items-center ">
-        <h2 className="logo text-24 md:text-32 font-bold">
+      <div className="flex relative justify-between  md:grid md:gap-x-20  md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px] items-center ">
+        <h2 onClick={handleClick} className="logo text-24 md:text-32 font-bold">
           <Link href="/">Shop.co</Link>
         </h2>
-        <div className="hidden md:flex links text-16 ">
+
+        <div
+          className={`${
+            session ? 'hidden md:flex' : 'hidden md:hidden'
+          }  links text-16`}
+        >
           <ul className="flex items-center md:gap-x-10  font-normal ">
             {links.map((link) => (
               <li key={link.id} className="relative">
@@ -76,7 +83,11 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
-        <div className="search w-full relative hidden md:block">
+        <div
+          className={`${
+            session ? 'hidden md:block' : 'hidden md:hidden'
+          } search w-full relative `}
+        >
           <input
             className="w-full bg-bg-secondry py-10 rounded-3xl text-16 px-35 border-none outline-none"
             type="text"
@@ -85,7 +96,11 @@ export default function Navbar() {
           />
           <i className="fa-solid fa-magnifying-glass absolute left-10 top-15"></i>
         </div>
-        <div className="cart_profile mt-5 md:mt-0 text-[#585858] ">
+        <div
+          className={`${
+            session ? '' : 'hidden md:hidden'
+          } cart_profile mt-5 md:mt-0 text-[#585858] `}
+        >
           <ul className="flex gap-15 items-center md:text-20">
             {cartProfile.map((cart) => (
               <li key={cart.id} className="relative">
