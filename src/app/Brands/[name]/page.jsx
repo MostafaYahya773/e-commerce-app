@@ -72,8 +72,11 @@ export default function Brands() {
       ?.slice(0, 33)
       .filter((item) => item?.brand.name.includes(decodeURIComponent(name)));
   }, [data]);
-  console.log(dataOffer);
-
+  // disaple switching to product details
+  const handlePrevent = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
   // check if data is loading
   if (isLoading) return <LoadingAnimation />;
   return (
@@ -93,32 +96,32 @@ export default function Brands() {
           {dataOffer?.length} products
         </p>
       </div>
-      <div className="grid gap-10 md:gap-30  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pb-15 ">
+      <div className="grid gap-10 md:gap-30 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pb-15 ">
         {dataOffer?.map((item, index) => (
-          <div
+          <Link
+            aria-label="product details"
             key={index}
-            className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
+            href={`/productDetails/${item?._id}`}
+            className="info md:p-10 p-7  product-shadow rounded-md
+            flex flex-col gap-y-5 shadow-lg"
           >
-            <Link
-              aria-label="product details"
-              href={`/productDetails/${item?._id}`}
-            >
-              <div className="img ">
-                <SwitchSliderSwiper
-                  path="/viewProduct"
-                  images={item?.images}
-                  spaceBetween={20}
-                  arrows={false}
-                  dots={true}
-                />
-              </div>
-              <div className="name text-16 md:text-20 font-bold   mb-10">
+            <div className="img">
+              <SwitchSliderSwiper
+                path="/viewProduct"
+                images={item?.images}
+                spaceBetween={20}
+                arrows={false}
+                dots={true}
+              />
+            </div>
+            <div className="grid grid-rows-[auto_auto_auto] gap-y-5 h-full items-center">
+              <h3 className="name text-16 md:text-18 lg:text-20 font-bold">
                 {item?.title.split(' ').slice(0, 3).join(' ')}
-              </div>
-              <div className="rate flex items-center gap-1  mb-10">
+              </h3>
+              <div className="rate flex items-center gap-1">
                 <StarRating rate={item?.ratingsAverage} />
               </div>
-              <div className="price flex justify-between items-center">
+              <div className="relative flex justify-between items-center">
                 <div className="priceDetails font-bold  flex gap-10">
                   {item?.priceAfterDiscount ? (
                     <span className="beforeOffer">{`${item.priceAfterDiscount}`}</span>
@@ -131,48 +134,51 @@ export default function Brands() {
                     <span>{`$${item?.price}`}</span>
                   )}
                 </div>
+                <div className="flex gap-3 absolute right-0 opacity-40">
+                  <button
+                    aria-label="add to wishlist"
+                    onClick={(e) => {
+                      handlePrevent(e);
+                      handleAddToWishlist(item?._id);
+                      handleFullIdToWishlist(item?._id);
+                    }}
+                    className="wissListbtn text-18 md:text:20 px-2"
+                  >
+                    {isAddToWishlist === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={` ${
+                          fullIdToWishlist.includes(item?._id)
+                            ? 'text-descount-color'
+                            : ''
+                        } fa-solid fa-heart`}
+                      ></i>
+                    )}
+                  </button>
+                  <button
+                    aria-label="add to cart"
+                    onClick={(e) => {
+                      handlePrevent(e);
+                      handleAddToCart(item?._id);
+                      handleFullId(item?._id);
+                    }}
+                    className="cartbtn text-18 md:text:20 px-2"
+                  >
+                    {isAdd === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={` ${
+                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                        } fa-solid fa-cart-shopping`}
+                      ></i>
+                    )}
+                  </button>
+                </div>
               </div>
-            </Link>
-            <div className=" flex gap-5 absolute right-5 bottom-5 opacity-40">
-              <button
-                aria-label="add to wishlist"
-                onClick={() => {
-                  handleAddToWishlist(item?._id),
-                    handleFullIdToWishlist(item?._id);
-                }}
-                className="wissListbtn text-18 md:text:20 px-2"
-              >
-                {isAddToWishlist === item?._id ? (
-                  <span className="loaderCount"></span>
-                ) : (
-                  <i
-                    className={` ${
-                      fullIdToWishlist.includes(item?._id)
-                        ? 'text-descount-color'
-                        : ''
-                    } fa-solid fa-heart`}
-                  ></i>
-                )}
-              </button>
-              <button
-                aria-label="add to cart"
-                onClick={() => {
-                  handleAddToCart(item?._id), handleFullId(item?._id);
-                }}
-                className="cartbtn text-18 md:text:20 px-2"
-              >
-                {isAdd === item?._id ? (
-                  <span className="loaderCount"></span>
-                ) : (
-                  <i
-                    className={` ${
-                      fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                    } fa-solid fa-cart-shopping`}
-                  ></i>
-                )}
-              </button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

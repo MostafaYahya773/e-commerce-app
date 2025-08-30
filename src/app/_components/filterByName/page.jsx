@@ -3,13 +3,13 @@ import { UserContext } from '@/context/useContext';
 import useRequest from '@/hooks/useRequest';
 import React, { useContext, useEffect, useState } from 'react';
 
-export default function FilterByName({ type }) {
+export default function FilterByName({ type, hideFilter, setHideFilter }) {
   //share my data
   const { setShareResult } = useContext(UserContext);
   // choise product
   const [choiseProduct, setChoiseProduct] = useState('');
   //get data from api
-  const { data, isLoading } = useRequest('products');
+  const { data } = useRequest('products');
 
   // firest filter i use it to filter by type [women or men]
   const dataType = data?.data.filter((item) =>
@@ -100,11 +100,18 @@ export default function FilterByName({ type }) {
     setShareResult(filterData);
   };
   return (
-    <div className="listName flex flex-col gap-y-10">
+    <div
+      className={`${
+        hideFilter ? 'hidden' : 'flex'
+      } md:flex listName flex-col gap-y-10 `}
+    >
       <ul className="flex flex-col gap-y-10">
         {filterbyProductType?.map((item) => (
           <li
-            onClick={() => handleproduct(item)}
+            onClick={() => {
+              handleproduct(item);
+              setHideFilter(true);
+            }}
             className={`${
               choiseProduct === item.name
                 ? 'bg-black text-white p-4 rounded-md'

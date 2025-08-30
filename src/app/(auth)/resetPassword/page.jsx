@@ -57,10 +57,15 @@ export default function ResetPassword() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-[1000px] min-h-500 bg-bg-products rounded-md p-10">
         <div
           className="img bg-cover bg-no-repeat bg-center rounded-md h-300 md:h-full"
-          style={{ backgroundImage: `url(/loginImg.png)` }}
+          style={{ backgroundImage: `url(/images/loginImg.png)` }}
         ></div>
         <div className="flex flex-col my-auto gap-y-10 md:px-40">
-          <h1 className="font-bold text-32 lg:text-40 ">Reset Password</h1>
+          <div>
+            <h1 className="font-bold text-24">Reset Password</h1>
+            <p className="opacity-70 text-14">
+              Enter your email address and new password
+            </p>
+          </div>
           <div className="form">
             <form
               onSubmit={resetPassword.handleSubmit}

@@ -6,6 +6,7 @@ import { UserProvider } from '@/context/useContext';
 import { Toaster } from 'react-hot-toast';
 import Footer from './_components/footer/page';
 import SessionProviderWrapper from './_components/sessionProvide/page';
+import AuthProvider from '@/context/useAuth';
 
 export const metadata = {
   title: 'Create Next App',
@@ -27,21 +28,29 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      dir="ltr"
       className={`${archivoText.variable} ${robotoText.variable}`}
     >
+      <head>
+        <title>e-commerce website</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body className="bg-white max-w-[1300px] mx-auto ">
         <SessionProviderWrapper>
           <ReactQueryProvider>
-            <UserProvider>
-              <Toaster />
-              <header>
-                <Nav />
-              </header>
-              <main className="min-h-screen">{children}</main>
-              <footer>
-                <Footer />
-              </footer>
-            </UserProvider>
+            <AuthProvider>
+              <UserProvider>
+                <Toaster />
+                <header>
+                  <Nav />
+                </header>
+                <main className="lg:min-h-screen">{children}</main>
+                <footer>
+                  <Footer />
+                </footer>
+              </UserProvider>
+            </AuthProvider>
           </ReactQueryProvider>
         </SessionProviderWrapper>
       </body>

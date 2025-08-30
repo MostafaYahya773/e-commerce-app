@@ -19,9 +19,9 @@ export default function OrderDetails({ data, orderId, setIsOpen }) {
 
   return (
     <div
-      className={`fixed right-0 top-0 bottom-0 left-0 z-[101] bg-[#00000049] font-roboto w-full min-h-screen flex items-top justify-end overflow-y-scroll`}
+      className={`fixed right-0 top-0 bottom-0 left-0 z-[101] bg-[#00000049] font-roboto w-full  flex items-top justify-end overflow-y-scroll`}
     >
-      <div className="bg-white min-h-fit  w-full sm:w-3/4 md:w-1/2 lg:w-1/3 flex flex-col gap-y-20 p-10 ">
+      <div className="bg-white min-h-fit w-full sm:w-3/4 md:w-1/2 lg:w-1/3 flex flex-col gap-y-20 p-10 ">
         <div className="orderHead flex flex-col gap-10 border-b border-opacity-10 border-black pb-10">
           <div className="orderId flex justify-between items-center">
             <h1 className="font-bold text-16">

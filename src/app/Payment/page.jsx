@@ -34,7 +34,7 @@ export default function Payment() {
   }
   if (isLoading) return <LoadingAnimation />;
   return (
-    <div className="mt-50 md:mt-80 mb-150 lg:mb-80 grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-20 ">
+    <div className="mt-50 md:mt-80 lg:mb-80 mb-150 min-h-screen grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-20 ">
       <div className="paymentDetails flex flex-col gap-y-10">
         <div className="address">
           <AddressInPayment />

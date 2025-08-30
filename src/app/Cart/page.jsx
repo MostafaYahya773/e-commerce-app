@@ -23,19 +23,17 @@ export default function Cart() {
       <EmptyProducts src={'/cartEmpty.png'} message={'Your cart is empty'} />
     );
 
-  // if (isFetching) return <LoadingFetch />;
-
   const handleClearData = () => {
     clearDataFromCart();
   };
   return (
     <div
       className={`${
-        path === '/Cart' ? 'mt-50 md:mt-80' : ''
-      } flex flex-col gap-y-10 px-10 mb-150 lg:mb-80 `}
+        path === '/Cart' ? 'mt-50 md:mt-80 mb-150 lg:mb-80' : ''
+      } flex flex-col gap-y-10 px-10`}
     >
       <div className="title flex justify-between items-center">
-        <h1 className=" font-bold  text-16 md:text-20">
+        <h1 className="font-bold text-16 md:text-20">
           Your {path === '/Cart' ? 'Cart' : 'Order'}
         </h1>
         <div

@@ -15,6 +15,7 @@ import LoadingAnimation from '../../_components/LoadingAnimation/page';
 
 export default function ViewProduct() {
   const { type } = useParams();
+  console.log(type);
 
   // states
   const [filterType, setFilterType] = useState('all');
@@ -43,14 +44,12 @@ export default function ViewProduct() {
 
   // products to display based on 'type' param
   const productsToShow = useMemo(() => {
-    if (decodeURIComponent(type) === 'top selling') {
-      return filteredProducts
-        .filter((item) => item.ratingsAverage >= 4)
-        .slice(0, 33);
-    } else {
+    if (type === 'newArrivals') {
       return [...filteredProducts]
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .slice(0, 33);
+    } else if (type === 'onSale') {
+      return filteredProducts?.filter((item) => item?.priceAfterDiscount);
     }
   }, [filteredProducts, type]);
 
@@ -80,6 +79,11 @@ export default function ViewProduct() {
       onError: (e) => toast.error(e.response.data.message),
     });
   };
+  // disaple switching to product details
+  const handlePrevent = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   if (isLoading) return <LoadingAnimation />;
 
@@ -87,19 +91,19 @@ export default function ViewProduct() {
     <div className="flex flex-col gap-y-30 mb-150 lg:mb-80 px-10 font-roboto">
       <CustomHero
         img={
-          decodeURIComponent(type) === 'top selling'
-            ? `/topselling.png`
-            : '/arrives.png'
+          decodeURIComponent(type) === 'newArrivals'
+            ? '/arrives.png'
+            : `/sale.png`
         }
         title={
-          decodeURIComponent(type) === 'top selling'
-            ? 'Top Selling Products'
-            : 'New Arrivals Products'
+          decodeURIComponent(type) === 'newArrivals'
+            ? 'New Arrivals Products'
+            : 'OnSale Products'
         }
         subtitle={
-          decodeURIComponent(type) === 'top selling'
-            ? "Discover the top-selling items that everyone can't stop talking about, crafted to bring style and comfort to your everyday life"
-            : "Check out our latest arrivals, fresh from the designers, and be the first to own the season's hottest styles"
+          decodeURIComponent(type) === 'newArrivals'
+            ? "Check out our latest arrivals, fresh from the designers, and be the first to own the season's hottest styles"
+            : 'Discover unbeatable deals with our exclusive On Sale collection, where top-quality products meet exceptional discounts'
         }
       />
 
@@ -120,80 +124,84 @@ export default function ViewProduct() {
       </div>
 
       <div className="grid gap-10 md:gap-30 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {productsToShow.map((item, index) => (
-          <div
+        {productsToShow?.map((item, index) => (
+          <Link
             key={index}
-            className="relative flex product-shadow rounded-md flex-col gap-y-5 shadow-lg p-5 md:p-10"
+            aria-label="to product details"
+            href={`/productDetails/${item?._id}`}
+            className="info md:p-10 p-7 product-shadow rounded-md
+            flex flex-col gap-y-5 shadow-lg "
           >
-            <Link
-              aria-label="to product details"
-              href={`/productDetails/${item?._id}`}
-              className="flex flex-col gap-y-7"
-            >
-              <div className="img">
-                <SwitchSliderSwiper
-                  path="/viewProduct"
-                  images={item?.images}
-                  spaceBetween={20}
-                  arrows={false}
-                  dots={true}
-                />
+            <div className="img">
+              <SwitchSliderSwiper
+                path="/viewProduct"
+                images={item?.images}
+                spaceBetween={20}
+                arrows={false}
+                dots={true}
+              />
+            </div>
+            <div className="grid grid-rows-[auto_auto_auto] items-center h-full gap-y-7">
+              <h2 className="name text-16 md:text-20 font-bold">
+                {item?.title.split(' ').slice(0, 3).join(' ')}
+              </h2>
+              <div className="rate flex items-center gap-1">
+                <StarRating rate={item?.ratingsAverage} />
               </div>
-              <div className="grid grid-rows-[auto_auto_auto] items-center h-full gap-y-7">
-                <h2 className="name text-16 md:text-20 font-bold mb-10">
-                  {item?.title.split(' ').slice(0, 3).join(' ')}
-                </h2>
-                <div className="rate flex items-center gap-1 mb-10">
-                  <StarRating rate={item?.ratingsAverage} />
-                </div>
+              <div className="flex items-center w-full justify-between relative">
                 <h3 className="priceDetails font-bold flex gap-10">
                   {item?.priceAfterDiscount ? (
-                    <>
+                    <div className="flex gap-5 items-center">
                       <span>{`$${item.priceAfterDiscount}`}</span>
                       <del className="opacity-40">{`$${item?.price}`}</del>
-                    </>
+                    </div>
                   ) : (
                     <span>{`$${item?.price}`}</span>
                   )}
                 </h3>
+                <div className="flex gap-5 absolute right-0 opacity-40">
+                  <button
+                    aria-label="add to wishlist"
+                    onClick={(e) => {
+                      handlePrevent(e);
+                      handleAddToWishlist(item?._id);
+                    }}
+                    className="text-18 md:text-20 px-2"
+                  >
+                    {isAddToWishlist === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullIdToWishlist.includes(item?._id)
+                            ? 'text-descount-color'
+                            : ''
+                        } fa-solid fa-heart`}
+                      ></i>
+                    )}
+                  </button>
+                  <button
+                    aria-label="add to cart"
+                    onClick={(e) => {
+                      handlePrevent(e);
+                      handleAddToCart(item?._id);
+                    }}
+                    className="text-18 md:text-20 px-2"
+                  >
+                    {isAdd === item?._id ? (
+                      <span className="loaderCount"></span>
+                    ) : (
+                      <i
+                        className={`${
+                          fullId.includes(item?._id) ? 'text-verfied-color' : ''
+                        } fa-solid fa-cart-shopping`}
+                      ></i>
+                    )}
+                  </button>
+                </div>
               </div>
-            </Link>
-
-            <div className="flex gap-5 absolute right-5 bottom-5 opacity-40">
-              <button
-                aria-label="add to wishlist"
-                onClick={() => handleAddToWishlist(item?._id)}
-                className="text-18 md:text-20 px-2"
-              >
-                {isAddToWishlist === item?._id ? (
-                  <span className="loaderCount"></span>
-                ) : (
-                  <i
-                    className={`${
-                      fullIdToWishlist.includes(item?._id)
-                        ? 'text-descount-color'
-                        : ''
-                    } fa-solid fa-heart`}
-                  ></i>
-                )}
-              </button>
-              <button
-                aria-label="add to cart"
-                onClick={() => handleAddToCart(item?._id)}
-                className="text-18 md:text-20 px-2"
-              >
-                {isAdd === item?._id ? (
-                  <span className="loaderCount"></span>
-                ) : (
-                  <i
-                    className={`${
-                      fullId.includes(item?._id) ? 'text-verfied-color' : ''
-                    } fa-solid fa-cart-shopping`}
-                  ></i>
-                )}
-              </button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

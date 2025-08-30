@@ -6,17 +6,17 @@ import useWishlistData from '@/hooks/(wishList)/useWishlistData';
 import Image from 'next/image';
 import NavList from '../NavList/page';
 import useRequest from '@/hooks/useRequest';
-import { UserContext } from '@/context/useContext';
+import { authContext } from '@/context/useAuth';
 
 export default function Navbar() {
-  const { loading, session, handleClick } = useContext(UserContext);
-  if (loading) return;
+  const { status } = useContext(authContext);
+
   // open and close setting
   const [isOpen, setIsOpem] = useState(false);
   // select path
   const path = usePathname();
   // cart and wishlist
-  const [cartProfile, setCartProfile] = useState([
+  const cartProfile = [
     {
       name: '/wishlist.png',
       id: 3,
@@ -27,25 +27,22 @@ export default function Navbar() {
       id: 1,
       path: '/Cart',
     },
-  ]);
+  ];
   //cart links
-  const [links, setLinks] = useState([
+  const links = [
     {
-      name: 'Shop',
-      id: 1,
+      name: 'SHOP',
       path: '/',
     },
     {
-      name: 'OnSale',
-      id: 2,
-      path: '/onSale',
-    },
-    {
-      name: 'New Arrivals',
-      id: 4,
+      name: 'NEW ARRIVALS',
       path: '/viewProduct/newArrivals',
     },
-  ]);
+    {
+      name: 'SALE',
+      path: '/viewProduct/onSale',
+    },
+  ];
   //cart count
   const [CountOfCart, setCountOfCart] = useState(0);
   //Wishlist count
@@ -60,22 +57,29 @@ export default function Navbar() {
 
   return (
     <div className=" fixed top-0 left-0 right-0 z-[101] w-full  bg-white  max-w-[2000px] shadow-md px-10 py-2 font-roboto mx-auto">
-      <div className="flex relative justify-between  md:grid md:gap-x-20  md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px] items-center ">
-        <h2 onClick={handleClick} className="logo text-24 md:text-32 font-bold">
-          <Link href="/">Shop.co</Link>
-        </h2>
+      <div className="flex relative justify-between items-center  md:grid md:gap-x-20  md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px]  ">
+        <Link
+          className="logo text-24 md:text-32 font-bold"
+          aria-label="website logo"
+          href="/"
+        >
+          Shop.co
+        </Link>
 
         <div
           className={`${
-            session ? 'hidden md:flex' : 'hidden md:hidden'
+            status === 'authenticated' ? 'hidden md:flex' : 'hidden md:hidden'
           }  links text-16`}
         >
-          <ul className="flex items-center md:gap-x-10  font-normal ">
-            {links.map((link) => (
-              <li key={link.id} className="relative">
+          <ul className="flex items-center md:gap-x-10  font-medium ">
+            {links.map((link, index) => (
+              <li key={index} className="relative">
                 <Link
+                  aria-label="linsk name "
                   href={link.path}
-                  className={`${path === link.path ? 'active' : ''}`}
+                  className={`${
+                    path === link.path ? 'active opacity-100' : 'opacity-70'
+                  } text-14 `}
                 >
                   {link.name}
                 </Link>
@@ -85,12 +89,13 @@ export default function Navbar() {
         </div>
         <div
           className={`${
-            session ? 'hidden md:block' : 'hidden md:hidden'
+            status === 'authenticated' ? 'hidden md:block' : 'hidden md:hidden'
           } search w-full relative `}
         >
           <input
+            aria-label="search for broducts"
             className="w-full bg-bg-secondry py-10 rounded-3xl text-16 px-35 border-none outline-none"
-            type="text"
+            type="search"
             placeholder="Search for products.."
             name="search"
           />
@@ -98,12 +103,12 @@ export default function Navbar() {
         </div>
         <div
           className={`${
-            session ? '' : 'hidden md:hidden'
+            status === 'authenticated' ? '' : 'hidden md:hidden'
           } cart_profile mt-5 md:mt-0 text-[#585858] `}
         >
           <ul className="flex gap-15 items-center md:text-20">
-            {cartProfile.map((cart) => (
-              <li key={cart.id} className="relative">
+            {cartProfile.map((cart, index) => (
+              <li key={index} className="relative">
                 <Link href={cart.path}>
                   <Image
                     src={cart.name}

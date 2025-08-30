@@ -35,10 +35,15 @@ export default function VerifyCode() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-[1000px] min-h-500 bg-bg-products rounded-md p-10">
         <div
           className="img bg-cover bg-no-repeat bg-center rounded-md h-300 md:h-full"
-          style={{ backgroundImage: `url(/loginImg.png)` }}
+          style={{ backgroundImage: `url(/images/loginImg.png)` }}
         ></div>
         <div className="form flex flex-col justify-center gap-y-10 md:px-40 ">
-          <h1 className="font-bold text-24 ">Verify Code</h1>
+          <div className="flex flex-col">
+            <h1 className="font-bold text-24 ">Verify Code</h1>
+            <p className="opacity-70 text-14">
+              Enter the code sent to your email
+            </p>
+          </div>
           <div className="form">
             <form onSubmit={codeFormik.handleSubmit}>
               <div className="formInfo flex flex-col gap-y-10">

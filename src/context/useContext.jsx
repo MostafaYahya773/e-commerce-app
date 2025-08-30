@@ -1,41 +1,9 @@
 'use client';
 
-import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { createContext, useEffect, useState } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  //  use router to duriction
-  const router = useRouter();
-  //get session
-  const { data: session, status, loading } = useSession();
-  // set token
-  const [token, setToken] = useState(null);
-  //set id
-  const [userId, setUserId] = useState(null);
-  useEffect(() => {
-    if (status === 'loading') return;
-    if (status === 'authenticated' && session) {
-      setToken(session?.token);
-      setUserId(session?.user?.id);
-    } else {
-      setToken(null);
-      setUserId(null);
-      router.push('/login');
-    }
-  }, [status, session]);
-  const logOut = async () => {
-    await signOut({
-      redirect: false,
-    });
-    router.push('/login');
-  };
-  const handleClick = () => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-    }
-  };
   //share result of filter
   const [shareResult, setShareResult] = useState(null);
   //   all comments
@@ -112,12 +80,6 @@ export const UserProvider = ({ children }) => {
         setAddressId,
         currentAddress,
         setCurrentAddress,
-        token,
-        userId,
-        logOut,
-        loading,
-        session,
-        handleClick,
       }}
     >
       {children}

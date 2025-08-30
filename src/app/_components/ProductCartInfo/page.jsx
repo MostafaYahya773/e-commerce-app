@@ -73,22 +73,24 @@ export default function ProductCartInfo({ data }) {
                   {product?.product?.title.split(' ').slice(0, 3).join(' ') ||
                     'loading'}
                 </h1>
-                <div className="del__wishlist flex gap-7 justify-end">
+                <div className="del__product flex gap-7 justify-end">
                   <button
                     onClick={() => HandleDeleteCart(product?.product?._id)}
-                    className={`${
-                      path === '/Cart' ? 'block' : 'hidden'
-                    } delItem`}
+                    className={`${path === '/Cart' ? 'block' : ''} `}
                   >
-                    <span className="hidden sm:flex md:text-12 w-[130px] px-10 py-4 bg-black text-white rounded-2xl  items-center justify-center ">
+                    <span className="hidden sm:flex md:text-12 w-[130px] px-10 py-5 bg-black text-white rounded-2xl  items-center justify-center ">
                       {idToDelete === product?.product?._id ? (
                         <span className="loaderWishlist"></span>
                       ) : (
-                        <span className="text-12">delete From Cart</span>
+                        <span className="text-12">
+                          {path === '/Cart'
+                            ? 'delete From Cart'
+                            : 'delete item'}
+                        </span>
                       )}
                     </span>
                     <i
-                      className="block sm:hidden fa-solid fa-trash cursor-pointer opacity-60 mt-7"
+                      className="fa-solid fa-trash flex justify-center items-center sm:hidden cursor-pointer  text-white rounded-md bg-black py-4 px-12"
                       title="delete this product"
                     ></i>
                   </button>

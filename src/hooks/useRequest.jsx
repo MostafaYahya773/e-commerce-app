@@ -1,11 +1,11 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { UserContext } from '@/context/useContext';
 import { useContext } from 'react';
+import { authContext } from '@/context/useAuth';
 export default function useRequest(endPonts, id = '') {
   // get token from context
-  const { token } = useContext(UserContext);
+  const { token } = useContext(authContext);
   const getData = () => {
     const url = id
       ? `https://ecommerce.routemisr.com/api/v1/${endPonts}/${id}`

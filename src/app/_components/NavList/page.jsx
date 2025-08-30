@@ -1,50 +1,44 @@
 'use client';
 
-import { UserContext } from '@/context/useContext';
+import { authContext } from '@/context/useAuth';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
 
 export default function NavList() {
   const [isOpen, setIsOpen] = useState(true);
-  const { logOut } = useContext(UserContext);
+  const { logOut } = useContext(authContext);
   const links = [
     {
       href: '/',
       icon: 'fa-shop',
-      label: 'Shop',
-      className: 'md:hidden flex gap-x-2 items-center relative py-5',
-    },
-    {
-      href: '/onSale',
-      icon: 'fa-tag',
-      label: 'OnSale',
+      label: 'SHOP',
       className: 'md:hidden flex gap-x-2 items-center relative py-5',
     },
 
     {
-      href: '/viewProduct/new arrivals',
+      href: '/viewProduct/newArrivals',
       icon: 'fa-tag',
-      label: 'New Arrivals',
+      label: 'NEW ARRIVALS',
       className: 'md:hidden flex gap-x-2 items-center relative py-5',
     },
 
     {
       href: '/Address',
       icon: 'fa-solid fa-house',
-      label: 'Address',
+      label: 'ADDRESS',
       className: 'flex gap-x-2 items-center relative py-5',
     },
     {
       href: '/allorders',
       icon: 'fa-money-check',
-      label: 'All orders',
+      label: 'ALL ORDERS',
       className: 'flex gap-x-2 items-center relative py-5',
     },
 
     {
       href: '/login',
       icon: 'fa-right-from-bracket',
-      label: 'Log out',
+      label: 'LOG OUT',
       className: 'flex gap-x-2 items-center relative py-5',
       onclick: () => logOut(),
     },

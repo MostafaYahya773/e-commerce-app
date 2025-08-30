@@ -51,15 +51,15 @@ export default function Login() {
   });
 
   return (
-    <div className="mb-150 lg:mb-80 md:mt-50 flex justify-center items-center w-full h-screen mx-auto px-10 font-roboto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-[1000px] min-h-500 bg-bg-products rounded-md p-10">
+    <div className="mb-150 lg:mb-80 md:mt-100 mt-70 lg:mt-0 flex justify-center items-center w-full lg:h-screen mx-auto px-10 font-roboto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full lg:w-[1000px] bg-bg-products rounded-md p-10">
         <div
           className="img bg-cover bg-no-repeat bg-center rounded-md h-300 md:h-full"
-          style={{ backgroundImage: `url(/loginImg.png)` }}
+          style={{ backgroundImage: `url(/images/loginImg.png)` }}
         ></div>
         <div className="form flex flex-col justify-center gap-y-10 md:px-40 ">
           <div className="title flex flex-col gap-y-5">
-            <h1 className="font-bold text-40 ">Login</h1>
+            <h1 className="font-bold text-24 ">Login</h1>
             <div className="signup flex text-14 opacity-70 font-light tracking-wide">
               <p>don't have an account?</p>
               <Link href={'/signup'} className="text-center ms-4 underline">
