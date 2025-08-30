@@ -21,7 +21,7 @@ export default function AuthProvider({ children }) {
       setToken(session?.token);
       setUserId(session?.user?.id);
       if (router.pathname === '/login') {
-        router.replace('/');
+        router.push('/');
       }
     } else if (status === 'unauthenticated') {
       setToken(null);
