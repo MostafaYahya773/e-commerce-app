@@ -12,9 +12,7 @@ export default function useOnlineOrder(CardId) {
   const getData = (data) => {
     return axios
       .post(
-        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=${encodeURIComponent(
-          NEXTAUTH_URL
-        )}`,
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=${NEXTAUTH_URL}`,
         {
           shippingAddress: data?.data,
         },
