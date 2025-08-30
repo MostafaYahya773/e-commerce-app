@@ -12,7 +12,7 @@ export default function useOnlineOrder(CardId) {
   const getData = (data) => {
     return axios
       .post(
-        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=${NEXTAUTH_URL}`,
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${CardId}?url=https://e-commerce-app-pi-seven.vercel.app/`,
         {
           shippingAddress: data?.data,
         },
