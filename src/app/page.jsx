@@ -41,14 +41,14 @@ export default function Home() {
         <HomeSections
           title="New Arrivals"
           data={newArrivalsData}
-          type={'new arrivals'}
+          type={'newArrivals'}
         />
       </div>
       <div className="top-selling-section ">
         <HomeSections
           title="Top Selling"
           data={topSellingData}
-          type={'top selling'}
+          type={'onSale'}
         />
       </div>
       <div className="browse">

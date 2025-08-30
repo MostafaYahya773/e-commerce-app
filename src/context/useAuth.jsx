@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { signOut } from 'next-auth/react';
 import LoadingAnimation from '@/app/_components/LoadingAnimation/page';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { createContext } from 'react';
 
 export const authContext = createContext();
@@ -11,6 +11,8 @@ export default function AuthProvider({ children }) {
   const { data: session, status } = useSession();
   //  use router to duriction
   const router = useRouter();
+  // usepath
+  const pathname = usePathname();
   // set token
   const [token, setToken] = useState(null);
   //set id
@@ -20,25 +22,26 @@ export default function AuthProvider({ children }) {
     if (status === 'authenticated' && session) {
       setToken(session?.token);
       setUserId(session?.user?.id);
-      if (router.pathname === '/login') {
-        router.replace('/');
-      }
+      if (pathname === '/login') router.replace('/');
     } else if (status === 'unauthenticated') {
       setToken(null);
       setUserId(null);
-      router.push('/login');
+      if (pathname !== '/login') router.replace('/login');
     }
-  }, [status, session, router]);
+  }, [status, session, router, pathname]);
   const logOut = async () => {
     await signOut({
       redirect: false,
     });
-    router.push('/login');
+    router.replace('/login');
   };
-  if (status === 'loading') return <LoadingAnimation />;
-  return (
-    <authContext.Provider value={{ token, userId, logOut, status }}>
-      {children}
-    </authContext.Provider>
+
+  const value = useMemo(
+    () => ({ token, userId, logOut, status }),
+    [token, userId, status]
   );
+
+  if (status === 'loading') return <LoadingAnimation />;
+
+  return <authContext.Provider value={value}>{children}</authContext.Provider>;
 }

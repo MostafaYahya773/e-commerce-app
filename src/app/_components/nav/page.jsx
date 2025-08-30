@@ -94,12 +94,12 @@ export default function Navbar() {
         >
           <input
             aria-label="search for broducts"
-            className="w-full bg-bg-secondry py-10 rounded-3xl text-16 px-35 border-none outline-none"
-            type="search"
+            className="w-full bg-bg-secondry py-5 rounded-3xl text-16 px-35 border-none outline-none"
+            type="text"
             placeholder="Search for products.."
             name="search"
           />
-          <i className="fa-solid fa-magnifying-glass absolute left-10 top-15"></i>
+          <i className="fa-solid fa-magnifying-glass absolute left-10 top-10"></i>
         </div>
         <div
           className={`${
