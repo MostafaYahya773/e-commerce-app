@@ -19,10 +19,11 @@ export default function AuthProvider({ children }) {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    if (status === 'authenticated' && session) {
+    if (status === 'loading') return;
+    else if (status === 'authenticated' && session) {
       setToken(session?.token);
       setUserId(session?.user?.id);
-      if (pathname === '/login') router.replace('/');
+      if (pathname === '/login') router.push('/');
     } else if (status === 'unauthenticated') {
       setToken(null);
       setUserId(null);

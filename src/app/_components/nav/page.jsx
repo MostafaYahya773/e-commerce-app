@@ -7,12 +7,17 @@ import Image from 'next/image';
 import NavList from '../NavList/page';
 import useRequest from '@/hooks/useRequest';
 import { authContext } from '@/context/useAuth';
+import NavSearch from '../navSearch/page';
 
 export default function Navbar() {
+  //use context
   const { status } = useContext(authContext);
-
+  // focus in search bar
+  const [isFocus, setIsFocus] = useState(false);
   // open and close setting
   const [isOpen, setIsOpem] = useState(false);
+  //input value
+  const [inputValue, setInputValue] = useState('');
   // select path
   const path = usePathname();
   // cart and wishlist
@@ -55,6 +60,11 @@ export default function Navbar() {
     setCountOfWishlist(wishlistCount?.count);
   });
 
+  //get value from input
+  const handleInput = (e) => {
+    setInputValue(e.target.value);
+  };
+
   return (
     <div className=" fixed top-0 left-0 right-0 z-[101] w-full  bg-white  max-w-[2000px] shadow-md px-10 py-2 font-roboto mx-auto">
       <div className="flex relative justify-between items-center  md:grid md:gap-x-20  md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px]  ">
@@ -94,12 +104,16 @@ export default function Navbar() {
         >
           <input
             aria-label="search for broducts"
-            className="w-full bg-bg-secondry py-5 rounded-3xl text-16 px-35 border-none outline-none"
+            className="w-full bg-bg-secondry py-5 rounded-md text-16 px-35 border-none outline-none"
             type="text"
             placeholder="Search for products.."
             name="search"
+            onChange={handleInput}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setTimeout(() => setIsFocus(false), 200)}
           />
           <i className="fa-solid fa-magnifying-glass absolute left-10 top-10"></i>
+          {isFocus && <NavSearch inputValue={inputValue.trim()} />}
         </div>
         <div
           className={`${
@@ -129,7 +143,7 @@ export default function Navbar() {
               </li>
             ))}
             <li onClick={() => setIsOpem(!isOpen)} className="cursor-pointer">
-              <Image src={'/user.png'} width={21} height={21} alt="user" />
+              <i className="fa-solid fa-bars text-black  text-18 opacity-50"></i>
               <div className={`${isOpen ? 'block' : 'hidden'}`}>
                 {isOpen && <NavList />}
               </div>
