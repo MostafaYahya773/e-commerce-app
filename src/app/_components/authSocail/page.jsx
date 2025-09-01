@@ -4,11 +4,11 @@ import React from 'react';
 const SocialMediaAccount = [
   {
     name: 'Google',
-    icon: '/google.png',
+    icon: '/images/google.png',
   },
   {
     name: 'apple',
-    icon: '/apple.png',
+    icon: '/images/apple.png',
   },
 ];
 
