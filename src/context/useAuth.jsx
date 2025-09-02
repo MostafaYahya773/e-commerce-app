@@ -1,48 +1,35 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
-import { signOut } from 'next-auth/react';
+
+import { useMemo, createContext } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 import LoadingAnimation from '@/app/_components/LoadingAnimation/page';
-import { useSession } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
-import { createContext } from 'react';
 
 export const authContext = createContext();
+
 export default function AuthProvider({ children }) {
   const { data: session, status } = useSession();
-  //  use router to duriction
-  const router = useRouter();
-  // usepath
-  const pathname = usePathname();
-  // set token
-  const [token, setToken] = useState(null);
-  //set id
-  const [userId, setUserId] = useState(null);
 
-  useEffect(() => {
-    if (status === 'loading') return;
-    else if (status === 'authenticated' && session) {
-      setToken(session?.token);
-      setUserId(session?.user?.id);
-      if (pathname === '/login') router.push('/');
-    } else if (status === 'unauthenticated') {
-      setToken(null);
-      setUserId(null);
-      if (pathname !== '/login') router.replace('/login');
-    }
-  }, [status, session, router, pathname]);
   const logOut = async () => {
-    await signOut({
-      redirect: false,
-    });
-    router.replace('/login');
+    await signOut({ redirect: true, callbackUrl: '/login' });
   };
 
   const value = useMemo(
-    () => ({ token, userId, logOut, status }),
-    [token, userId, status]
+    () => ({
+      token: session?.user?.token || null,
+      userId: session?.user?.id || null,
+      logOut,
+      status,
+      session,
+    }),
+    [session, status]
   );
 
-  if (status === 'loading') return <LoadingAnimation />;
+  if (status === 'loading')
+    return (
+      <div className="w-full h-screen flex justify-center items-center text-20">
+        please wait...
+      </div>
+    );
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;
 }
