@@ -37,7 +37,6 @@ export default function Login() {
         });
         if (res?.ok) {
           toast.success('Login successful');
-          router.push('/');
         } else {
           setErrors({ general: res?.error || 'Login failed' });
           toast.error(res?.error || 'Login failed');
