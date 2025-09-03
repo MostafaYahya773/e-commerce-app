@@ -1,35 +1,32 @@
-import { withAuth } from 'next-auth/middleware';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
-export default withAuth(
-  function middleware(req) {
-    const { pathname } = req.nextUrl;
-    const token = req.nextauth.token;
-    console.log('PATHNAME:', pathname);
-    console.log('TOKEN:', token);
+export async function middleware(req) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const { pathname } = req.nextUrl;
 
-    if (!token && !pathname.startsWith('/login')) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
+  // صفحات auth اللي مش عايزها تبقى محمية
+  const authPages = [
+    '/login',
+    '/signup',
+    '/ForgetPassword',
+    '/verifyCode',
+    '/resetPassword',
+  ];
 
-    if (token && pathname.startsWith('/login')) {
-      return NextResponse.redirect(new URL('/', req.url));
-    }
-
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-    pages: {
-      signIn: '/login',
-    },
+  // لو مفيش token وحاول يفتح أي صفحة غير صفحات auth
+  if (!token && !authPages.some((page) => pathname.startsWith(page))) {
+    return NextResponse.redirect(new URL('/login', req.url));
   }
-);
+
+  // لو فيه token وهو داخل على صفحة auth
+  if (token && authPages.some((page) => pathname.startsWith(page))) {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: [
-    '/((?!auth|signup|ForgetPassword|verifyCode|resetPassword|_next|api|favicon.ico|public|images|uploads|assets).*)',
-  ],
+  matcher: ['/((?!_next|api|favicon.ico|public|images|uploads|assets).*)'],
 };
