@@ -2,13 +2,12 @@
 import AuthSocail from '@/app/_components/authSocail/page';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 export default function Login() {
-  const { update } = useSession();
   const router = useRouter();
   const [type, setType] = useState('password');
   const schemaValidation = Yup.object().shape({
@@ -37,13 +36,8 @@ export default function Login() {
           password: values.password,
         });
         if (res?.ok) {
-          await update();
-          const updatesession = getSession();
-          if (updatesession) {
-            router.replace('/');
-          }
           toast.success('Login successful');
-          // window.location.href = '/';
+          window.location.href = '/';
         } else {
           setErrors({ general: res?.error || 'Login failed' });
           toast.error(res?.error || 'Login failed');
