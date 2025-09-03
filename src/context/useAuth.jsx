@@ -2,8 +2,6 @@
 
 import { useMemo, createContext } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import LoadingAnimation from '@/app/_components/LoadingAnimation/page';
-
 export const authContext = createContext();
 
 export default function AuthProvider({ children }) {
@@ -15,7 +13,7 @@ export default function AuthProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      token: session?.user?.token || null,
+      token: session?.user?.accessToken || null,
       userId: session?.user?.id || null,
       logOut,
       status,
@@ -24,12 +22,7 @@ export default function AuthProvider({ children }) {
     [session, status]
   );
 
-  if (status === 'loading')
-    return (
-      <div className="w-full h-screen flex justify-center items-center text-20">
-        please wait...
-      </div>
-    );
+  if (status === 'loading') return null;
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;
 }

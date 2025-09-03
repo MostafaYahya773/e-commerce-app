@@ -67,7 +67,7 @@ export default function Navbar() {
 
   return (
     <div className=" fixed top-0 left-0 right-0 z-[101] w-full  bg-white  max-w-[2000px] shadow-md px-10 py-2 font-roboto mx-auto">
-      <div className="flex relative justify-between items-center  md:grid md:gap-x-20  md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px]  ">
+      <div className=" relative  grid md:gap-x-20 gap-x-10 items-center grid-cols-[auto_1fr_auto] md:grid-cols-[auto_auto_1fr_auto] mx-auto max-w-[1300px]  ">
         <Link
           className="logo text-24 md:text-32 font-bold"
           aria-label="website logo"
@@ -99,20 +99,20 @@ export default function Navbar() {
         </div>
         <div
           className={`${
-            status === 'authenticated' ? 'hidden md:block' : 'hidden md:hidden'
+            status === 'authenticated' ? 'block' : 'hidden'
           } search w-full relative `}
         >
           <input
             aria-label="search for broducts"
-            className="w-full bg-bg-secondry py-5 rounded-md text-16 px-35 border-none outline-none"
+            className="w-full bg-bg-secondry md:py-5 py-2 rounded-md text-16 px-35 border-none outline-none"
             type="text"
             placeholder="Search for products.."
             name="search"
             onChange={handleInput}
             onFocus={() => setIsFocus(true)}
-            onBlur={() => setTimeout(() => setIsFocus(false), 200)}
+            onBlur={() => setTimeout(() => setIsFocus(false), 400)}
           />
-          <i className="fa-solid fa-magnifying-glass absolute left-10 top-10"></i>
+          <i className="fa-solid fa-magnifying-glass absolute md:text-16 text-14 left-10 md:top-10 top-8 "></i>
           {isFocus && <NavSearch inputValue={inputValue.trim()} />}
         </div>
         <div
@@ -120,7 +120,7 @@ export default function Navbar() {
             status === 'authenticated' ? '' : 'hidden md:hidden'
           } cart_profile mt-5 md:mt-0 text-[#585858] `}
         >
-          <ul className="flex gap-15 items-center md:text-20">
+          <ul className="flex md:gap-15 gap-10 items-center md:text-20">
             {cartProfile.map((cart, index) => (
               <li key={index} className="relative">
                 <Link href={cart.path}>

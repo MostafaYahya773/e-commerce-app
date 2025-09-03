@@ -32,7 +32,7 @@ export const authOptions = {
 
           return {
             id: verify.data.decoded.id,
-            token: data.token,
+            accessToken: data.token, // <--- التوكين الأصلي هنا بدون nested token
             name: data.user?.name,
             email: data.user?.email,
             role: data.user?.role,
@@ -53,7 +53,7 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.token = user.token;
+        token.accessToken = user.accessToken;
         token.name = user.name;
         token.email = user.email;
         token.role = user.role;
@@ -66,7 +66,7 @@ export const authOptions = {
         name: token.name,
         email: token.email,
         role: token.role,
-        token: token.token,
+        accessToken: token.accessToken,
       };
       return session;
     },

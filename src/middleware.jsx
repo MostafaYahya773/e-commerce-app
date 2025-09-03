@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server';
 export default withAuth(
   function middleware(req) {
     const { pathname } = req.nextUrl;
-    const token = req.nextauth.token;
+
+    const token = req.nextauth.token?.accessToken;
 
     if (!token && pathname !== '/login') {
       return NextResponse.redirect(new URL('/login', req.url));
@@ -18,7 +19,7 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token,
+      authorized: ({ token }) => !!token?.accessToken,
     },
     pages: {
       signIn: '/login',
