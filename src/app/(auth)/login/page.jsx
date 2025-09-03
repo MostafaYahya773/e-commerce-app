@@ -37,7 +37,8 @@ export default function Login() {
         });
         if (res?.ok) {
           toast.success('Login successful');
-          router.push('/');
+          // await fetch('/api/auth/session?update');
+          router.replace('/');
         } else {
           setErrors({ general: res?.error || 'Login failed' });
           toast.error(res?.error || 'Login failed');
