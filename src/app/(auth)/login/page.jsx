@@ -37,8 +37,8 @@ export default function Login() {
         });
         if (res?.ok) {
           toast.success('Login successful');
-          window.location.href = '/';
-          // router.replace('/');
+          // window.location.href = '/';
+          router.replace('/');
         } else {
           setErrors({ general: res?.error || 'Login failed' });
           toast.error(res?.error || 'Login failed');
