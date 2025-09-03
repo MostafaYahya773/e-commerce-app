@@ -32,7 +32,7 @@ export const authOptions = {
 
           return {
             id: verify.data.decoded.id,
-            accessToken: data.token, // <--- التوكين الأصلي هنا بدون nested token
+            accessToken: data.token,
             name: data.user?.name,
             email: data.user?.email,
             role: data.user?.role,
@@ -48,6 +48,9 @@ export const authOptions = {
   session: {
     strategy: 'jwt',
     maxAge: 60 * 60,
+  },
+  pages: {
+    signIn: '/login',
   },
   callbacks: {
     async jwt({ token, user }) {
