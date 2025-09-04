@@ -105,22 +105,22 @@ export default function Footer() {
     {
       id: 1,
       name: 'Visa',
-      src: '/visa.png',
+      src: '/images/visa.png',
     },
     {
       id: 2,
       name: 'Paypal',
-      src: '/paypal.png',
+      src: '/images/paypal.png',
     },
     {
       id: 3,
       name: 'apple pay',
-      src: '/apple-pay.png',
+      src: '/images/apple-pay.png',
     },
     {
       id: 4,
       name: 'google pay',
-      src: '/google-pay.png',
+      src: '/images/google-pay.png',
     },
   ];
 
