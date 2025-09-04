@@ -53,13 +53,13 @@ export default function ResetPassword() {
   });
 
   return (
-    <div className="mb-150 lg:mb-80 mt-60 md:mt-80  mg:mt-50 flex justify-center md:items-center lg:items-start w-full min-h-screen mx-auto px-10 font-roboto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-[1000px] min-h-500 bg-bg-products rounded-md p-10">
+    <div className="mb-150 lg:mb-80  flex justify-center items-center w-full min-h-screen mx-auto px-10 font-roboto">
+      <div className="grid grid-rows-[auto_auto] gap-10 w-500 bg-bg-products rounded-md p-10">
         <div
-          className="img bg-cover bg-no-repeat bg-center rounded-md h-300 md:h-full"
+          className="img bg-cover bg-no-repeat bg-center rounded-md h-300 "
           style={{ backgroundImage: `url(/images/loginImg.png)` }}
         ></div>
-        <div className="flex flex-col my-auto gap-y-10 md:px-40">
+        <div className="flex flex-col my-auto gap-y-10 ">
           <div>
             <h1 className="font-bold text-24">Reset Password</h1>
             <p className="opacity-70 text-14">

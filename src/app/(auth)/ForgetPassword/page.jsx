@@ -31,13 +31,13 @@ export default function ForgetPassword() {
   });
 
   return (
-    <div className="mb-150 lg:mb-80 md:mt-50 flex justify-center items-center w-full h-screen mx-auto px-10 font-roboto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-[1000px] min-h-500 bg-bg-products rounded-md p-10">
+    <div className="mb-150 lg:mb-80 flex justify-center items-center w-full h-screen mx-auto px-10 font-roboto">
+      <div className="grid grid-rows-[auto_auto] gap-10 w-500  bg-bg-products rounded-md p-10">
         <div
-          className="img bg-cover bg-no-repeat bg-center rounded-md h-300 md:h-full"
+          className="img bg-cover bg-no-repeat bg-center rounded-md h-300"
           style={{ backgroundImage: `url(images/loginImg.png)` }}
         ></div>
-        <div className="form flex flex-col justify-center gap-y-10 md:px-40 ">
+        <div className="form flex flex-col  gap-y-10  ">
           <div className="title flex flex-col gap-y-0">
             <h1 className="font-bold text-24 ">Forget password</h1>
             <p className="opacity-70 text-14">

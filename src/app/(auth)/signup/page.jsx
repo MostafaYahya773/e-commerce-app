@@ -1,5 +1,4 @@
 'use client';
-import AuthSocail from '@/app/_components/authSocail/page';
 import useSignUp from '@/hooks/(auth)/useSignUp';
 import { useFormik } from 'formik';
 import Link from 'next/link';
@@ -7,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
+
 export default function Signup() {
   //send data to api
   const { mutate: signUp } = useSignUp();
@@ -82,8 +82,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="mb-150 lg:mb-80 mt-60 md:mt-80  mg:mt-50 flex justify-center md:items-center lg:items-start w-full min-h-screen mx-auto px-10 font-roboto">
-      <div className="grid grid-cols-1 md:grid-cols-2  gap-10 w-[1000px] h-fit bg-bg-products rounded-md p-10">
+    <div className="mb-150 lg:mb-80 mt-60 md:mt-0   flex justify-center md:items-center items-center w-full min-h-screen mx-auto px-10 font-roboto">
+      <div className="grid grid-cols-1 md:grid-rows-2 lg:grid-cols-2 lg:grid-rows-1  gap-10 w-[1000px] h-fit bg-bg-products rounded-md p-10">
         <div
           className="img bg-cover bg-no-repeat bg-center rounded-md h-300 md:h-full"
           style={{ backgroundImage: `url(/images/loginImg.png)` }}
@@ -141,14 +141,6 @@ export default function Signup() {
                 </div>
               </div>
             </form>
-          </div>
-          <div className="flex items-center w-full mb-4 opacity-50 ">
-            <hr className="flex-grow border-opacity-50 border-black" />
-            <span className="mx-10 font-medium">Or</span>
-            <hr className="flex-grow border-opacity-50 border-black" />
-          </div>
-          <div className="socialmedia">
-            <AuthSocail />
           </div>
         </div>
       </div>

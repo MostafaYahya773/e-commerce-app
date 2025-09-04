@@ -1,5 +1,4 @@
 'use client';
-import AuthSocail from '@/app/_components/authSocail/page';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
@@ -51,13 +50,13 @@ export default function Login() {
   });
 
   return (
-    <div className="mb-150 lg:mb-80 md:mt-100 mt-70 lg:mt-0 flex justify-center items-center w-full lg:h-screen mx-auto px-10 font-roboto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full lg:w-[1000px] bg-bg-products rounded-md p-10">
+    <div className="mb-150 lg:mb-80   flex justify-center items-center w-full min-h-screen mx-auto px-10 font-roboto">
+      <div className="grid grid-rows-1 md:grid-rows-2 gap-10 w-500 bg-bg-products rounded-md p-10">
         <div
           className="img bg-cover bg-no-repeat bg-center rounded-md h-300 md:h-full"
           style={{ backgroundImage: `url(/images/loginImg.png)` }}
         ></div>
-        <div className="form flex flex-col justify-center gap-y-10 md:px-40 ">
+        <div className="form flex flex-col justify-center gap-y-10  ">
           <div className="title flex flex-col gap-y-5">
             <h1 className="font-bold text-24 ">Login</h1>
             <div className="signup flex text-14 opacity-70 font-light tracking-wide">
@@ -113,14 +112,6 @@ export default function Login() {
                 </div>
               </div>
             </form>
-          </div>
-          <div className="flex items-center w-full mb-4 opacity-50">
-            <hr className="flex-grow border-opacity-50 border-black" />
-            <span className="mx-10 font-medium">Or</span>
-            <hr className="flex-grow border-opacity-50 border-black" />
-          </div>
-          <div className="socialmedia">
-            <AuthSocail />
           </div>
         </div>
       </div>
