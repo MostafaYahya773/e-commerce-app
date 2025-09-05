@@ -21,7 +21,12 @@ export default function NavList() {
       label: 'NEW ARRIVALS',
       className: 'md:hidden flex gap-x-2 items-center relative py-5',
     },
-
+    {
+      href: '/viewProduct/onSale',
+      icon: 'fa-money-check-dollar',
+      label: 'SALE',
+      className: 'md:hidden flex gap-x-2 items-center relative py-5',
+    },
     {
       href: '/Address',
       icon: 'fa-solid fa-house',
